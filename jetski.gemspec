@@ -1,0 +1,12 @@
+Gem::Specification.new do |s|
+  s.name        = "jetski"
+  s.version     = "0.0.0"
+  s.summary     = "A simple and fast MVC framework"
+  s.description = "Would you rather ride on a train or a jetski? that is the question you might use when comparing using our framework or the popular Ruby on Rails framework. "
+  s.authors     = ["Indigo Tech Tutorials"]
+  s.email       = "indigo@tech.tut"
+  s.files       = ["lib/jetski.rb"]
+  s.homepage    =
+    "https://rubygems.org/gems/jetski"
+  s.license       = "MIT"
+end
