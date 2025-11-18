@@ -1,4 +1,6 @@
-# Jetski MVC framework for Ruby. Build websites faster
+# 🌊 Jetski MVC framework for Ruby. 
+
+now u can build websites even faster!
 
 Whats faster a train or a jetski? Would you rather ride on a train or a jetski? 
 
