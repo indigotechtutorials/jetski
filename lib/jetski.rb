@@ -1,6 +1,7 @@
-require_relative './lib/jetski/server.rb'
-require_relative './lib/jetski/splash_router.rb'
-require_relative './lib/jetski/waterfall_controller.rb'
+require_relative './jetski/server'
+require_relative './jetski/splash_router'
+require_relative './jetski/waterfall_controller'
+require "webrick"
 
 module Jetski
 end

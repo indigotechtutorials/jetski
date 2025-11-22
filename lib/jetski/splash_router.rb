@@ -1,5 +1,3 @@
-Dir[File.join('./app', 'controllers', '*.rb')].each { |file| require file }
-
 module Jetski
   class SplashRouter
     attr_reader :server

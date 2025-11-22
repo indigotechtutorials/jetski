@@ -1,8 +1,3 @@
-require 'webrick'
-require 'pry'
-require_relative './splash_router'
-require_relative './waterfall_controller.rb'
-
 module Jetski
   class Server
     def initialize
