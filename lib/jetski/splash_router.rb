@@ -10,7 +10,7 @@ module Jetski
 
     def parse_routes
       # Convert routes file into render of correct controller and action
-      routes_file = File.join(APP_ROOT, "config/routes.rb")
+      routes_file = File.join(Jetski.app_root, "config/routes.rb")
 
       File.readlines(routes_file, chomp: true).each do |line|
         route_action = line.split(" ")[0]
@@ -25,7 +25,7 @@ module Jetski
         
         server.mount_proc served_url do |req, res|
           constantized_controller = "#{controller_name.capitalize}Controller"
-          path_to_defined_controller = File.join(APP_ROOT, "app/controllers/#{controller_name}_controller.rb")
+          path_to_defined_controller = File.join(Jetski.app_root, "app/controllers/#{controller_name}_controller.rb")
           require_relative path_to_defined_controller
           found_error = false
           begin
@@ -48,12 +48,12 @@ module Jetski
 
     def host_assets
       # Render css via url
-      css_files = Dir[File.join(APP_ROOT,'app/assets/stylesheets/*.css')]
+      css_files = Dir[File.join(Jetski.app_root,'app/assets/stylesheets/*.css')]
       css_files.each do |file_path|
         filename = file_path.split("/").last
         asset_url = "/assets/#{filename}"
         server.mount_proc asset_url do |req, res|
-          res.body = File.read(File.join(APP_ROOT,"app/assets/stylesheets/#{filename}"))
+          res.body = File.read(File.join(Jetski.app_root,"app/assets/stylesheets/#{filename}"))
         end
       end
     end
