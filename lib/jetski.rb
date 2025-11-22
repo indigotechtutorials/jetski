@@ -6,4 +6,3 @@ require "pry"
 
 module Jetski
   APP_ROOT = Dir.pwd
-end
