@@ -24,12 +24,24 @@ module Jetski
         end
         
         server.mount_proc served_url do |req, res|
-          controller_class = Object.const_get("#{controller_name.capitalize}Controller")
-          controller = controller_class.new(res)
-          controller.action_name = action_name
-          controller.controller_name = controller_name
-          controller.send(action_name)
-          controller.render
+          constantized_controller = "#{controller_name.capitalize}Controller"
+          path_to_defined_controller = File.join(Dir.pwd, "app/controllers/#{controller_name}_controller.rb")
+          require_relative path_to_defined_controller
+          found_error = false
+          begin
+            controller_class = Object.const_get(constantized_controller)
+          rescue NameError
+            found_error = true
+            # TODO: Move this into a method that can render a styled error to page.  
+            res.body = "#{constantized_controller} is not defined. Please create a file app/controllers/#{controller_name}.rb"
+          end
+          if found_error == false # Continue unless error found
+            controller = controller_class.new(res)
+            controller.action_name = action_name
+            controller.controller_name = controller_name
+            controller.send(action_name)
+            controller.render
+          end
         end
       end
     end
