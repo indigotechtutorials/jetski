@@ -10,7 +10,7 @@ module Jetski
 
     def parse_routes
       # Convert routes file into render of correct controller and action
-      routes_file = "config/routes.rb"
+      routes_file = File.join(Dir.pwd, "config/routes.rb")
 
       File.readlines(routes_file, chomp: true).each do |line|
         route_action = line.split(" ")[0]
