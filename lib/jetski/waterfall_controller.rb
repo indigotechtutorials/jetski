@@ -10,8 +10,8 @@ module Jetski
     # Method to render matching view with controller_name/action_name
     
     def render
-      views_folder = File.join(Dir.pwd, 'app/views')
-      assets_folder = File.join(Dir.pwd, 'app/assets/stylesheets')
+      views_folder = File.join(APP_ROOT, 'app/views')
+      assets_folder = File.join(APP_ROOT, 'app/assets/stylesheets')
       layout_content = File.read(File.join(views_folder, "layouts/application.html"))
       page_content = File.read(File.join(views_folder, controller_name, "#{action_name}.html"))
       page_with_layout = layout_content.gsub("YIELD_CONTENT", page_content)

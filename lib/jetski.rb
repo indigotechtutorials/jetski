@@ -5,4 +5,5 @@ require "webrick"
 require "pry"
 
 module Jetski
+  APP_ROOT = __dir__
 end

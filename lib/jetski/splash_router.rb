@@ -10,7 +10,7 @@ module Jetski
 
     def parse_routes
       # Convert routes file into render of correct controller and action
-      routes_file = File.join(Dir.pwd, "config/routes.rb")
+      routes_file = File.join(APP_ROOT, "config/routes.rb")
 
       File.readlines(routes_file, chomp: true).each do |line|
         route_action = line.split(" ")[0]
@@ -25,7 +25,7 @@ module Jetski
         
         server.mount_proc served_url do |req, res|
           constantized_controller = "#{controller_name.capitalize}Controller"
-          path_to_defined_controller = File.join(Dir.pwd, "app/controllers/#{controller_name}_controller.rb")
+          path_to_defined_controller = File.join(APP_ROOT, "app/controllers/#{controller_name}_controller.rb")
           require_relative path_to_defined_controller
           found_error = false
           begin
