@@ -5,9 +5,5 @@ require "webrick"
 require "pry"
 
 module Jetski
-  APP_ROOT = if defined?(Bundler)
-             Bundler.root
-           else
-             Dir.pwd
-           end
+  APP_ROOT = Dir.pwd
 end
