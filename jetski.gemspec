@@ -1,6 +1,6 @@
 Gem::Specification.new do |s|
   s.name        = "jetski"
-  s.version     = "0.1.6"
+  s.version     = "0.1.7"
   s.summary     = "A simple and fast MVC framework"
   s.description = "Would you rather ride on a train or a jetski? that is the question you might use when comparing using our framework or the popular Ruby on Rails framework. "
   s.authors     = ["Indigo Tech Tutorials"]
@@ -10,6 +10,5 @@ Gem::Specification.new do |s|
   s.license       = "MIT"
   s.metadata['source_code_uri'] = 'https://github.com/indigotechtutorials/jetski'
   s.add_dependency('webrick', '~> 1.9.1')
-  s.add_development_dependency('pry', '~> 0.15.2')
   s.add_development_dependency('thor', '~> 1.4.0')
 end
