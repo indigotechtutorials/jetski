@@ -17,6 +17,12 @@ I wanted to see if I could create an alternative with a simpler and possibly fas
 
 `gem install jetski`
 
+### Creating an app
+
+After installing the jetski gem you can use the jetski command in your terminal to generate new apps
+
+`jetski new my-app`
+
 ### Example app
 
 This is an app I built which uses the jetski library and shows you the structure of a Jetski app.
