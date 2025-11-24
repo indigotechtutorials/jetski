@@ -1,6 +1,6 @@
 # This is the base controller of the library
 module Jetski
-  class WaterfallController
+  class BaseController
     attr_accessor :action_name, :controller_name
     attr_reader :res
     def initialize(res)

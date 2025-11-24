@@ -1,5 +1,5 @@
 module Jetski
-  class SplashRouter
+  class Router
     attr_reader :server
     def initialize(server)
       @server = server

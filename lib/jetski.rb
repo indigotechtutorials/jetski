@@ -1,8 +1,7 @@
 require_relative './jetski/server'
-require_relative './jetski/splash_router'
-require_relative './jetski/waterfall_controller'
+require_relative './jetski/router'
+require_relative './jetski/base_controller'
 require "webrick"
-require "pry"
 
 module Jetski
   # Debug stage add constants here for debugging.

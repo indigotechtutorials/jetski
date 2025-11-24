@@ -11,4 +11,5 @@ Gem::Specification.new do |s|
   s.metadata['source_code_uri'] = 'https://github.com/indigotechtutorials/jetski'
   s.add_dependency('webrick', '~> 1.9.1')
   s.add_development_dependency('pry', '~> 0.15.2')
+  s.add_development_dependency('thor', '~> 1.4.0')
 end

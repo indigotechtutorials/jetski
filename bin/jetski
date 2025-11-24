@@ -1,0 +1,25 @@
+#!/usr/bin/env ruby
+
+require 'optparse'
+require 'jetski'
+require 'thor'
+
+class JetskiCLI < Thor
+  include Thor::Actions
+  desc "new APP_NAME", "Create a new Jetski app"
+  def new(name)
+    say "Creating #{name} app with Jetski!"
+    FileUtils.mkdir_p(name)
+    directory "base", "#{name}"
+    run "cd #{name} && bundle install"
+    say "Your app #{name} has been generated!"
+    say "Start you're app fast with this command"
+    say "cd #{name} && ruby ./start.rb"
+  end
+
+  def self.source_root
+    File.join(File.dirname(__FILE__), '..', 'templates')
+  end
+end
+
+JetskiCLI.start(ARGV)
