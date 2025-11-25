@@ -35,7 +35,7 @@ currently the jetski framework is structured very similar to the Ruby on Rails l
 
 For now create a app/controllers/pages_controller.rb ( or whatever your controller name is)
 
-then create a config/routes.rb file and add root "pages#home" this will route to that action and call the pages_controller home action and then render the template found in
+then create a `config/routes` file and add `get / pages home` this will route to that action and call the pages_controller home action and then render the template found in
 
 app/views/pages/home.html
 

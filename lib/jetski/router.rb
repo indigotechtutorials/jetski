@@ -4,25 +4,17 @@ module Jetski
     def initialize(server)
       @server = server
     end
+
     def call
       parse_routes && host_assets
     end
 
     def parse_routes
       # Convert routes file into render of correct controller and action
-      routes_file = File.join(Jetski.app_root, "config/routes.rb")
+      routes_file = File.join(Jetski.app_root, "config/routes")
 
       File.readlines(routes_file, chomp: true).each do |line|
-        route_action = line.split(" ")[0]
-        controller_mapping = line.split(" ")[1].gsub(/\"/, "")
-        controller_name = controller_mapping.split("#")[0]
-        action_name = controller_mapping.split("#")[1]
-        
-        served_url = case route_action
-        when "root"
-          "/"
-        end
-        
+        route_action, served_url, controller_name, action_name = line.split(" ")
         server.mount_proc served_url do |req, res|
           constantized_controller = "#{controller_name.capitalize}Controller"
           path_to_defined_controller = File.join(Jetski.app_root, "app/controllers/#{controller_name}_controller.rb")
