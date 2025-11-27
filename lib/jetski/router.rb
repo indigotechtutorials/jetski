@@ -16,23 +16,35 @@ module Jetski
       File.readlines(routes_file, chomp: true).each do |line|
         route_action, served_url, controller_name, action_name = line.split(" ")
         server.mount_proc served_url do |req, res|
-          constantized_controller = "#{controller_name.capitalize}Controller"
-          path_to_defined_controller = File.join(Jetski.app_root, "app/controllers/#{controller_name}_controller.rb")
-          require_relative path_to_defined_controller
-          found_error = false
-          begin
-            controller_class = Object.const_get(constantized_controller)
-          rescue NameError
-            found_error = true
-            # TODO: Move this into a method that can render a styled error to page.  
-            res.body = "#{constantized_controller} is not defined. Please create a file app/controllers/#{controller_name}.rb"
+          errors = []
+          if (route_action.upcase != req.request_method)
+            errors << "Wrong request was performed"
           end
-          if found_error == false # Continue unless error found
+          # TODO: Fix the fact that we are always setting res.body to something here. 
+          # Theres no way to return. We need to organize into case statement or if/else type
+          
+          if errors.empty?
+            constantized_controller = "#{controller_name.capitalize}Controller"
+            path_to_defined_controller = File.join(Jetski.app_root, "app/controllers/#{controller_name}_controller.rb")
+            require_relative path_to_defined_controller
+            begin
+              controller_class = Object.const_get(constantized_controller)
+            rescue NameError
+              errors << "#{constantized_controller} is not defined. Please create a file app/controllers/#{controller_name}.rb"
+            end
+          end
+
+          if errors.empty? # Continue unless error found
             controller = controller_class.new(res)
             controller.action_name = action_name
             controller.controller_name = controller_name
             controller.send(action_name)
-            controller.render
+            # Render matching HTML template for GET requests only
+            controller.render if route_action.upcase == "GET"
+          end
+
+          if errors.any?
+            res.body = errors.join(", ")
           end
         end
       end
