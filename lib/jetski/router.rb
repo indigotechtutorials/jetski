@@ -55,6 +55,8 @@ module Jetski
     end
 
     def host_images
+      # TODO: Expand this to support more types of images.
+      
       image_files = Dir[
         File.join(Jetski.app_root, 'app/assets/images/*.jpg')
       ]

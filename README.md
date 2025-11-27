@@ -1,18 +1,5 @@
 # 🌊 Jetski MVC framework for Ruby. 
 
-now u can build websites even faster!
-
-Whats faster a train or a jetski? Would you rather ride on a train or a jetski? 
-
-This all depends on your preference but this is why I create the Jetski library for Ruby.
-
-I wanted to see if I could create an alternative with a simpler and possibly faster approach and I realized I could do just that!
-
-
-### Which would you rather ride?
-
-![rails-jetski](https://github.com/user-attachments/assets/c72eba3d-a954-465a-be39-c1a636194c0d)
-
 ### Installation guide
 
 `gem install jetski`
@@ -28,6 +15,55 @@ After installing the jetski gem you can use the jetski command in your terminal 
 This is an app I built which uses the jetski library and shows you the structure of a Jetski app.
 
 https://github.com/indigotechtutorials/ruby-web-app-fun
+
+### Hosting Assets
+
+To include external asset files such as CSS stylesheets and images you can put them in the assets folder under the corresponding file type
+
+### CSS 
+
+for css files put them in the `/app/assets/stylesheets` folder. Jetski will automatically search for a matching css file that matches your controller name.
+
+For example if you have a pages_controller it will look for a matching pages.css file located at `/app/assets/stylesheets/pages.css`
+
+To access the files just go to the name of the file in the browser `localhost:8000/pages.css`
+
+You can use this to include the CSS file manually as well
+
+Add this to head section in html 
+
+```html
+<link rel="stylesheet" type="text/css" href="/pages.css">
+```
+
+### Images
+
+for image files you can put them in `app/assets/images` Jetski will find these matching image files and host them with them being available through the url.
+
+For example adding a file `test-image.jpg` to the `app/assets/images` folder with a final path of `app/assets/images/test-image.jpg` will now be automatically available through the url `localhost:8000/test-image.jpg`
+
+You can use this to for image sources on the page like so
+
+```html
+  <img src="/test-image.jpg" width="300px" height="400px"/>
+```
+
+
+### Framework description
+
+now u can build websites even faster!
+
+Whats faster a train or a jetski? Would you rather ride on a train or a jetski? 
+
+This all depends on your preference but this is why I create the Jetski library for Ruby.
+
+I wanted to see if I could create an alternative with a simpler and possibly faster approach and I realized I could do just that!
+
+
+### Which would you rather ride?
+
+![rails-jetski](https://github.com/user-attachments/assets/c72eba3d-a954-465a-be39-c1a636194c0d)
+
 
 ### Structure
 
