@@ -17,7 +17,7 @@ module Jetski
       page_with_layout = layout_content.gsub("YIELD_CONTENT", page_content)
       action_css_file = File.join(assets_folder, "#{controller_name}.css")
       css_content = if File.exist? action_css_file
-        "<link rel='stylesheet' href='/assets/#{controller_name}.css'>"
+        "<link rel='stylesheet' href='/#{controller_name}.css'>"
       else
         ''
       end

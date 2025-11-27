@@ -39,13 +39,30 @@ module Jetski
     end
 
     def host_assets
-      # Render css via url
+      # Render stylesheets css via url
+      host_css && host_images
+    end
+
+    def host_css
       css_files = Dir[File.join(Jetski.app_root,'app/assets/stylesheets/*.css')]
       css_files.each do |file_path|
         filename = file_path.split("/").last
-        asset_url = "/assets/#{filename}"
+        asset_url = "/#{filename}"
         server.mount_proc asset_url do |req, res|
           res.body = File.read(File.join(Jetski.app_root,"app/assets/stylesheets/#{filename}"))
+        end
+      end
+    end
+
+    def host_images
+      image_files = Dir[
+        File.join(Jetski.app_root, 'app/assets/images/*.jpg')
+      ]
+      image_files.each do |file_path|
+        filename = file_path.split("/").last
+        asset_url = "/#{filename}"
+        server.mount_proc asset_url do |req, res|
+          res.body = File.read(File.join(Jetski.app_root,"app/assets/images/#{filename}"))
         end
       end
     end
