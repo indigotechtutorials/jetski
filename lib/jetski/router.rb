@@ -24,7 +24,8 @@ module Jetski
           # Theres no way to return. We need to organize into case statement or if/else type
           
           if errors.empty?
-            constantized_controller = "#{controller_name.capitalize}Controller"
+            controller_name_formatted = controller_name.split("/").map(&:capitalize).join("::")
+            constantized_controller = "#{controller_name_formatted}Controller"
             path_to_defined_controller = File.join(Jetski.app_root, "app/controllers/#{controller_name}_controller.rb")
             require_relative path_to_defined_controller
             begin
@@ -41,11 +42,14 @@ module Jetski
             controller.send(action_name)
             # Render matching HTML template for GET requests only
             controller.render if route_action.upcase == "GET"
+            # TODO: Need to setup redirects for other request types. POST/PUT/DELETE
           end
 
           if errors.any?
             res.body = errors.join(", ")
           end
+
+          # TODO: Set response content/type and status when rendering/redirecting or head
         end
       end
     end

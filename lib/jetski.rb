@@ -2,6 +2,7 @@ require_relative './jetski/server'
 require_relative './jetski/router'
 require_relative './jetski/base_controller'
 require "webrick"
+require "json"
 
 module Jetski
   # Debug stage add constants here for debugging.

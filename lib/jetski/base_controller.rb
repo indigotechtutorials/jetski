@@ -9,7 +9,23 @@ module Jetski
 
     # Method to render matching view with controller_name/action_name
     
-    def render
+    def render(**args)
+      if args[:text]
+        res.content_type = "text/plain"
+        res.body = "#{args[:text]}\n"
+        return
+      end
+
+      if args[:json]
+        res.content_type = "application/json"
+        res.body = args[:json].to_json
+        return
+      end
+      render_template_file
+    end
+
+  private
+    def render_template_file
       views_folder = File.join(Jetski.app_root, 'app/views')
       assets_folder = File.join(Jetski.app_root, 'app/assets/stylesheets')
       layout_content = File.read(File.join(views_folder, "layouts/application.html"))
@@ -22,6 +38,7 @@ module Jetski
         ''
       end
       page_with_css = page_with_layout.gsub("DYNAMIC_CSS", css_content)
+      res.content_type = "text/html"
       res.body = page_with_css
     end
   end
