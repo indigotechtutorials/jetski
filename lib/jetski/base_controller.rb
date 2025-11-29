@@ -9,6 +9,10 @@ module Jetski
       def request_method(method)
         # Really just a shell method since Im using File.readlines to use the logic in routes.
       end
+
+      def root
+        # another shell method
+      end
     end
 
     def initialize(res)
@@ -20,6 +24,8 @@ module Jetski
     
     def render(**args)
       @performed_render = true
+      request_status = args[:status] || 200
+      res.status = request_status
       if args[:text]
         res.content_type = "text/plain"
         res.body = "#{args[:text]}\n"

@@ -10,16 +10,8 @@ module Jetski
     end
 
     def parse_routes
-      # TODO: move from routes file to automatic routing.
-
-      # Find all controllers and create automatic urls for them.
-      
       auto_found_routes = []
-
-      # Served urls is an array of objects
-
       controller_file_paths = Dir.glob([File.join(Jetski.app_root, 'app', 'controllers', '**', '*_controller.rb')])
-      
       controller_file_paths.each do |file_path| 
         controller_file_name = file_path.split('app/controllers')[1]
         controller_as_url = controller_file_name.gsub(/_controller.rb/, '')
@@ -30,8 +22,6 @@ module Jetski
           strp_line = line.strip 
           if strp_line.start_with?('def')
             action_name = strp_line.split("def").last.strip
-            
-            # Go thru and set routes based on method names
             base_opts = { 
               controller_classname: controller_classname, 
               controller_file_name: controller_file_name,
@@ -75,16 +65,20 @@ module Jetski
                 action_name: action_name,
               })
             else
-              # AUTO setting method to GET we need to fix this.
-            
               custom_req_method_check = controller_file_readlines[idx - 1].strip
               custom_request_method = if custom_req_method_check.include?("request_method")
                 custom_req_method_check.split(" ")[1].gsub('"', '').upcase
               else
                 "GET"
               end
+              check_root = controller_file_readlines[idx - 1].strip
+              url_to_use = if check_root.include?("root")
+                "/"
+              else
+                controller_as_url + "/#{action_name}"
+              end
               auto_found_routes << base_opts.merge({
-                url: controller_as_url + "/#{action_name}",
+                url: url_to_use,
                 method: custom_request_method,
                 action_name: action_name,
               })
@@ -106,9 +100,6 @@ module Jetski
           if (request_method!= req.request_method)
             errors << "Wrong request was performed"
           end
-          # TODO: Fix the fact that we are always setting res.body to something here. 
-          # Theres no way to return. We need to organize into case statement or if/else type
-          
           if errors.empty?
             path_to_defined_controller = File.join(Jetski.app_root, "app/controllers/#{controller_file_name}")
             require_relative path_to_defined_controller
@@ -119,12 +110,11 @@ module Jetski
             end
           end
 
-          if errors.empty? # Continue unless error found
+          if errors.empty?
             controller = controller_class.new(res)
             controller.action_name = action_name
             controller.controller_name = controller_name
             controller.send(action_name)
-            # Render matching HTML template for GET requests only
             if !controller.performed_render && (request_method.upcase == "GET")
               controller.render
             end
