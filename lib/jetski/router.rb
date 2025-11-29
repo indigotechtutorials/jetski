@@ -25,7 +25,8 @@ module Jetski
         controller_as_url = controller_file_name.gsub(/_controller.rb/, '')
         controller_name = controller_as_url.split("/").last
         controller_classname = controller_as_url.split("/").reject(&:empty?).map(&:capitalize).join("::") + "Controller"
-        File.readlines(file_path).each do |line| 
+        controller_file_readlines = File.readlines(file_path)
+        controller_file_readlines.each.with_index do |line, idx| 
           strp_line = line.strip 
           if strp_line.start_with?('def')
             action_name = strp_line.split("def").last.strip
@@ -74,9 +75,17 @@ module Jetski
                 action_name: action_name,
               })
             else
+              # AUTO setting method to GET we need to fix this.
+            
+              custom_req_method_check = controller_file_readlines[idx - 1].strip
+              custom_request_method = if custom_req_method_check.include?("request_method")
+                custom_req_method_check.split(" ")[1].gsub('"', '').upcase
+              else
+                "GET"
+              end
               auto_found_routes << base_opts.merge({
                 url: controller_as_url + "/#{action_name}",
-                method: "GET",
+                method: custom_request_method,
                 action_name: action_name,
               })
             end

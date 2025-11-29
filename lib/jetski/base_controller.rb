@@ -4,6 +4,13 @@ module Jetski
     attr_accessor :action_name, :controller_name
     attr_reader :res
     attr_reader :performed_render
+
+    class << self
+      def request_method(method)
+        # Really just a shell method since Im using File.readlines to use the logic in routes.
+      end
+    end
+
     def initialize(res)
       @res = res
       @performed_render = false
