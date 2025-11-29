@@ -48,6 +48,56 @@ You can use this to for image sources on the page like so
   <img src="/test-image.jpg" width="300px" height="400px"/>
 ```
 
+### Routing
+
+I initially had used a routes file where you could define your routes manually similar to Rails but than I thought that maybe it would be cool if we could have our routes be defined easier and automatically from the controller we are using. This will reduce the amount of files needed to change when building a new feature which does save time.
+
+In my solution the routes are automatically created by the controller name and the action name it supports the default CRUD methods similar to rails and will set the HTTP method used automatically.
+
+For any other method name it will use a GET http method by default but to override this and use a custom HTTP method you can set the `request_method "post"` line before your controller method to change the request method it looks for.
+
+```ruby
+class PostsController < Jetski::BaseController
+  def new
+  end
+
+  def create
+  end
+
+  def show
+  end
+
+  def edit
+  end
+
+  def update
+  end
+
+  def destroy
+  end
+end
+```
+Creates these route
+
+```routes
+  GET /posts/new
+  POST /posts
+  GET /posts/:id
+  GET /posts/:id/edit
+  PUT /posts/:id
+  DELETE /posts/:id
+```
+
+```ruby
+class PostsController < Jetski::BaseController
+  request_method "post"
+  def save
+    # do the saving logic
+  end
+end
+```
+
+Creates this route: "POST /posts/save"
 
 ### Framework description
 
