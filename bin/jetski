@@ -18,9 +18,19 @@ class JetskiCLI < Thor
     say "cd #{name} && ruby ./start.rb"
   end
 
+  desc "-v, --version", "show Jetski version"
+  def version
+    say "Jetski v#{Jetski::VERSION}"
+  end
+
   def self.source_root
     File.join(File.dirname(__FILE__), '..', 'templates')
   end
 end
 
-JetskiCLI.start(ARGV)
+# Version command seperate from thor for simplicity
+if ["-v", "--version"].include?(ARGV[0])
+  puts "Jetski v#{Jetski::VERSION}"
+else
+  JetskiCLI.start(ARGV)
+end
