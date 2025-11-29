@@ -10,28 +10,103 @@ module Jetski
     end
 
     def parse_routes
-      # Convert routes file into render of correct controller and action
-      routes_file = File.join(Jetski.app_root, "config/routes")
+      # TODO: move from routes file to automatic routing.
 
-      File.readlines(routes_file, chomp: true).each do |line|
-        route_action, served_url, controller_name, action_name = line.split(" ")
+      # Find all controllers and create automatic urls for them.
+      
+      auto_found_routes = []
+
+      # Served urls is an array of objects
+
+      controller_file_paths = Dir.glob([File.join(Jetski.app_root, 'app', 'controllers', '**', '*_controller.rb')])
+      
+      controller_file_paths.each do |file_path| 
+        controller_file_name = file_path.split('app/controllers')[1]
+        controller_as_url = controller_file_name.gsub(/_controller.rb/, '')
+        controller_name = controller_as_url.split("/").last
+        controller_classname = controller_as_url.split("/").reject(&:empty?).map(&:capitalize).join("::") + "Controller"
+        File.readlines(file_path).each do |line| 
+          strp_line = line.strip 
+          if strp_line.start_with?('def')
+            action_name = strp_line.split("def").last.strip
+            
+            # Go thru and set routes based on method names
+            base_opts = { 
+              controller_classname: controller_classname, 
+              controller_file_name: controller_file_name,
+              controller_name: controller_name 
+            }
+            case action_name
+            when "new"
+              auto_found_routes << base_opts.merge({
+                url: controller_as_url + "/new",
+                method: "GET",
+                action_name: action_name,
+              })
+            when "create"
+              auto_found_routes << base_opts.merge({
+                url: controller_as_url,
+                method: "POST",
+                action_name: action_name,
+              })
+            when "show"
+              auto_found_routes << base_opts.merge({
+                url: controller_as_url + "/:id",
+                method: "GET",
+                action_name: action_name,
+              })
+            when "edit"
+              auto_found_routes << base_opts.merge({
+                url: controller_as_url + "/:id/edit",
+                method: "GET",
+                action_name: action_name,
+              })
+            when "update"
+              auto_found_routes << base_opts.merge({
+                url: controller_as_url + "/:id",
+                method: "PUT",
+                action_name: action_name,
+              })
+            when "destroy"
+              auto_found_routes << base_opts.merge({
+                url: controller_as_url + "/:id",
+                method: "DELETE",
+                action_name: action_name,
+              })
+            else
+              auto_found_routes << base_opts.merge({
+                url: controller_as_url + "/#{action_name}",
+                method: "GET",
+                action_name: action_name,
+              })
+            end
+          end
+        end
+      end
+
+      auto_found_routes.each do |af_route|
+        served_url = af_route[:url]
+        request_method = af_route[:method]
+        controller_classname = af_route[:controller_classname]
+        controller_name = af_route[:controller_name]
+        action_name = af_route[:action_name]
+        controller_file_name = af_route[:controller_file_name]
+
         server.mount_proc served_url do |req, res|
           errors = []
-          if (route_action.upcase != req.request_method)
+          if (request_method!= req.request_method)
             errors << "Wrong request was performed"
           end
           # TODO: Fix the fact that we are always setting res.body to something here. 
           # Theres no way to return. We need to organize into case statement or if/else type
           
           if errors.empty?
-            controller_name_formatted = controller_name.split("/").map(&:capitalize).join("::")
-            constantized_controller = "#{controller_name_formatted}Controller"
-            path_to_defined_controller = File.join(Jetski.app_root, "app/controllers/#{controller_name}_controller.rb")
+            path_to_defined_controller = File.join(Jetski.app_root, "app/controllers/#{controller_file_name}")
             require_relative path_to_defined_controller
             begin
-              controller_class = Object.const_get(constantized_controller)
+              controller_class = Object.const_get(controller_classname)
             rescue NameError
-              errors << "#{constantized_controller} is not defined. Please create a file app/controllers/#{controller_name}.rb"
+              errors << "#{controller_classname} is not defined. Please create a file app/controllers/#{controller_file_name}"
             end
           end
 
@@ -41,7 +116,9 @@ module Jetski
             controller.controller_name = controller_name
             controller.send(action_name)
             # Render matching HTML template for GET requests only
-            controller.render if route_action.upcase == "GET"
+            if !controller.performed_render && (request_method.upcase == "GET")
+              controller.render
+            end
             # TODO: Need to setup redirects for other request types. POST/PUT/DELETE
           end
 

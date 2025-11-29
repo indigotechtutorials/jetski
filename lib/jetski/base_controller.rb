@@ -3,13 +3,16 @@ module Jetski
   class BaseController
     attr_accessor :action_name, :controller_name
     attr_reader :res
+    attr_reader :performed_render
     def initialize(res)
       @res = res
+      @performed_render = false
     end
 
     # Method to render matching view with controller_name/action_name
     
     def render(**args)
+      @performed_render = true
       if args[:text]
         res.content_type = "text/plain"
         res.body = "#{args[:text]}\n"
@@ -21,6 +24,7 @@ module Jetski
         res.body = args[:json].to_json
         return
       end
+      
       render_template_file
     end
 
