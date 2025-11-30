@@ -109,6 +109,18 @@ class PagesController < Jetski::BaseController
 end
 ```
 
+Set a custom url path by setting the path option before your method
+currently setting the path and request_method only work for non CRUD named actions because those urls and methods are automatically created for now.
+
+```ruby
+class ProjectsController < Jetski::BaseController
+  path "/cool-custom-url"
+  request_method "post"
+  def save
+  end
+end
+```
+
 ### Framework description
 
 now u can build websites even faster!
