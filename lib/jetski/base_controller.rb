@@ -3,13 +3,33 @@ module Jetski
   class BaseController
     attr_accessor :action_name, :controller_name
     attr_reader :res
+    attr_reader :performed_render
+
+    class << self
+      def request_method(method)
+        # Really just a shell method since Im using File.readlines to use the logic in routes.
+      end
+
+      def root
+        # another shell method
+      end
+
+      def path(location)
+        # Another shell method
+      end
+    end
+
     def initialize(res)
       @res = res
+      @performed_render = false
     end
 
     # Method to render matching view with controller_name/action_name
     
     def render(**args)
+      @performed_render = true
+      request_status = args[:status] || 200
+      res.status = request_status
       if args[:text]
         res.content_type = "text/plain"
         res.body = "#{args[:text]}\n"
@@ -21,6 +41,7 @@ module Jetski
         res.body = args[:json].to_json
         return
       end
+      
       render_template_file
     end
 

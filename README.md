@@ -48,6 +48,66 @@ You can use this to for image sources on the page like so
   <img src="/test-image.jpg" width="300px" height="400px"/>
 ```
 
+### Routing
+
+I initially had used a routes file where you could define your routes manually similar to Rails but than I thought that maybe it would be cool if we could have our routes be defined easier and automatically from the controller we are using. This will reduce the amount of files needed to change when building a new feature which does save time.
+
+In my solution the routes are automatically created by the controller name and the action name it supports the default CRUD methods similar to rails and will set the HTTP method used automatically.
+
+For any other method name it will use a GET http method by default but to override this and use a custom HTTP method you can set the `request_method "post"` line before your controller method to change the request method it looks for.
+
+```ruby
+class PostsController < Jetski::BaseController
+  def new
+  end
+
+  def create
+  end
+
+  def show
+  end
+
+  def edit
+  end
+
+  def update
+  end
+
+  def destroy
+  end
+end
+```
+Creates these route
+
+```routes
+  GET /posts/new
+  POST /posts
+  GET /posts/:id
+  GET /posts/:id/edit
+  PUT /posts/:id
+  DELETE /posts/:id
+```
+
+```ruby
+class PostsController < Jetski::BaseController
+  request_method "post"
+  def save
+    # do the saving logic
+  end
+end
+```
+
+Creates this route: "POST /posts/save"
+
+To set the root of the app simply add the "root" keyword before the method you want to use
+
+```ruby
+class PagesController < Jetski::BaseController
+  root
+  def home
+  end
+end
+```
 
 ### Framework description
 
@@ -63,16 +123,3 @@ I wanted to see if I could create an alternative with a simpler and possibly fas
 ### Which would you rather ride?
 
 ![rails-jetski](https://github.com/user-attachments/assets/c72eba3d-a954-465a-be39-c1a636194c0d)
-
-
-### Structure
-
-currently the jetski framework is structured very similar to the Ruby on Rails library this is because that is what I'm most familar with and when building this it was easy just to rebuild what I'm familar with and it works great! which makes you think with innovation you can build something even cooler!
-
-For now create a app/controllers/pages_controller.rb ( or whatever your controller name is)
-
-then create a `config/routes` file and add `get / pages home` this will route to that action and call the pages_controller home action and then render the template found in
-
-app/views/pages/home.html
-
-We are not using .ERB or any templating system yet. So it is basically a static site framework for now until I implement database support, models and better template files. 
