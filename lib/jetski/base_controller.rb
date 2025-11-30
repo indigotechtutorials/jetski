@@ -13,6 +13,10 @@ module Jetski
       def root
         # another shell method
       end
+
+      def path(location)
+        # Another shell method
+      end
     end
 
     def initialize(res)

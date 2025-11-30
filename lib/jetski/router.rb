@@ -65,17 +65,23 @@ module Jetski
                 action_name: action_name,
               })
             else
-              custom_req_method_check = controller_file_readlines[idx - 1].strip
-              custom_request_method = if custom_req_method_check.include?("request_method")
-                custom_req_method_check.split(" ")[1].gsub('"', '').upcase
+              method_route_options = controller_file_readlines[(idx - 2)..(idx - 1)].map(&:strip)
+              custom_request_method = method_route_options.find { |line| line.start_with? "request_method" }
+              custom_request_method = if custom_request_method
+                custom_request_method.split(" ")[1].gsub('"', '').upcase
               else
                 "GET"
               end
+              custom_path_option = method_route_options.find { |line| line.start_with? "path" }
               check_root = controller_file_readlines[idx - 1].strip
               url_to_use = if check_root.include?("root")
                 "/"
               else
-                controller_as_url + "/#{action_name}"
+                if custom_path_option
+                  custom_path_option.split(" ")[1].gsub('"', '')
+                else
+                  controller_as_url + "/#{action_name}"
+                end
               end
               auto_found_routes << base_opts.merge({
                 url: url_to_use,
