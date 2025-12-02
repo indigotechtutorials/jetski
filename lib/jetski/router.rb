@@ -19,6 +19,7 @@ module Jetski
         controller_name = af_route[:controller_name]
         action_name = af_route[:action_name]
         controller_file_name = af_route[:controller_file_name]
+        controller_path = af_route[:controller_path]
 
         server.mount_proc served_url do |req, res|
           errors = []
@@ -39,6 +40,7 @@ module Jetski
             controller = controller_class.new(res)
             controller.action_name = action_name
             controller.controller_name = controller_name
+            controller.controller_path = controller_path
             controller.send(action_name)
             if !controller.performed_render && (request_method.upcase == "GET")
               controller.render

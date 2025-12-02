@@ -7,9 +7,9 @@ module Jetski
         controller_file_paths = Dir.glob([File.join(Jetski.app_root, 'app', 'controllers', '**', '*_controller.rb')])
         controller_file_paths.each do |file_path| 
           controller_file_name = file_path.split('app/controllers')[1]
-          controller_as_url = controller_file_name.gsub(/_controller.rb/, '')
-          controller_name = controller_as_url.split("/").last
-          controller_classname = controller_as_url.split("/").reject(&:empty?).map(&:capitalize).join("::") + "Controller"
+          controller_path = controller_file_name.gsub(/_controller.rb/, '')
+          controller_name = controller_path.split("/").last
+          controller_classname = controller_path.split("/").reject(&:empty?).map(&:capitalize).join("::") + "Controller"
           controller_file_readlines = File.readlines(file_path)
           controller_file_readlines.each.with_index do |line, idx| 
             strp_line = line.strip 
@@ -18,42 +18,43 @@ module Jetski
               base_opts = { 
                 controller_classname: controller_classname, 
                 controller_file_name: controller_file_name,
-                controller_name: controller_name 
+                controller_name: controller_name,
+                controller_path: controller_path,
               }
               case action_name
               when "new"
                 auto_found_routes << base_opts.merge({
-                  url: controller_as_url + "/new",
+                  url: controller_path + "/new",
                   method: "GET",
                   action_name: action_name,
                 })
               when "create"
                 auto_found_routes << base_opts.merge({
-                  url: controller_as_url,
+                  url: controller_path,
                   method: "POST",
                   action_name: action_name,
                 })
               when "show"
                 auto_found_routes << base_opts.merge({
-                  url: controller_as_url + "/:id",
+                  url: controller_path + "/:id",
                   method: "GET",
                   action_name: action_name,
                 })
               when "edit"
                 auto_found_routes << base_opts.merge({
-                  url: controller_as_url + "/:id/edit",
+                  url: controller_path + "/:id/edit",
                   method: "GET",
                   action_name: action_name,
                 })
               when "update"
                 auto_found_routes << base_opts.merge({
-                  url: controller_as_url + "/:id",
+                  url: controller_path + "/:id",
                   method: "PUT",
                   action_name: action_name,
                 })
               when "destroy"
                 auto_found_routes << base_opts.merge({
-                  url: controller_as_url + "/:id",
+                  url: controller_path + "/:id",
                   method: "DELETE",
                   action_name: action_name,
                 })
@@ -74,7 +75,7 @@ module Jetski
                     custom_path_option.split(" ")[1].gsub('"', '')
                   else
                     url_friendly_action_name = action_name.split("_").join("-")
-                    controller_as_url + "/#{url_friendly_action_name}"
+                    controller_path + "/#{url_friendly_action_name}"
                   end
                 end
                 auto_found_routes << base_opts.merge({
