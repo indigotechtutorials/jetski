@@ -1,8 +1,10 @@
 require_relative './jetski/version'
 require_relative './jetski/base_controller'
 require_relative './jetski/server'
+require_relative './jetski/router/parser'
 require_relative './jetski/router'
 require "webrick"
+require "json"
 require "json"
 
 module Jetski

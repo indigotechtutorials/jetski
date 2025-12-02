@@ -135,3 +135,22 @@ I wanted to see if I could create an alternative with a simpler and possibly fas
 ### Which would you rather ride?
 
 ![rails-jetski](https://github.com/user-attachments/assets/c72eba3d-a954-465a-be39-c1a636194c0d)
+
+### Development mode
+
+Testing CLI command. To test CLI command in development environment to avoid having to rebuild the command each time you can run `ruby -I lib ./bin/jetski`
+
+To pass in a folder dir to use as the jetski route you can find the working directory of a jetski app by using `pwd` and then take that and set it as an environment variable
+
+for example
+
+```sh
+cd jetski-app
+pwd # /Users/username/apps/your-jetski-app
+
+cd ~/jetski
+export JETSKI_PROJECT_PATH="/Users/username/apps/your-jetski-app"
+ruby -I lib ./bin/jetski routes
+```
+
+This will print out the routes generated in that app.

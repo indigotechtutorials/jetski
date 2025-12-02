@@ -23,6 +23,15 @@ class JetskiCLI < Thor
     say "Jetski v#{Jetski::VERSION}"
   end
 
+  desc "routes", "shows the routes in your app."
+  def routes
+    compiled_routes = Jetski::Router::Parser.compile_routes
+    say "🌊 Jetski Routes 🏄‍♂️"
+    compiled_routes.each do |route_obj|
+      say "#{route_obj[:method]} #{route_obj[:url]} #{route_obj[:controller_name]}##{route_obj[:action_name]}"
+    end
+  end
+  
   def self.source_root
     File.join(File.dirname(__FILE__), '..', 'templates')
   end
