@@ -8,9 +8,8 @@ Gem::Specification.new do |s|
   s.authors     = ["Indigo Tech Tutorials"]
   s.email       = "indigo@tech.tut"
   s.files       = [
-                    "bin/jetski", 
+                    Dir.glob("bin/**/*"), 
                     Dir.glob("lib/**/*"), 
-                    Dir.glob("templates/**/*")
                   ].flatten
   s.homepage    = "https://rubygems.org/gems/jetski"
   s.license       = "MIT"

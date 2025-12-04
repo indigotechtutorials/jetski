@@ -3,6 +3,7 @@
 require 'optparse'
 require 'jetski'
 require 'thor'
+require_relative './jetski_cli_helpers/generate.rb'
 
 class JetskiCLI < Thor
   include Thor::Actions
@@ -33,9 +34,12 @@ class JetskiCLI < Thor
       say "#{route_obj[:method]} #{route_obj[:url]} #{route_obj[:controller_name]}##{route_obj[:action_name]}"
     end
   end
+
+  desc "generate", "generates resources in your jetski app"
+  subcommand "generate", JetskiCLIHelpers::Generate
   
   def self.source_root
-    File.join(File.dirname(__FILE__), '..', 'templates')
+    File.join(File.dirname(__FILE__), 'templates')
   end
 end
 

@@ -1,0 +1,3 @@
+class CONTROLLER_NAMEController < Jetski::BaseController
+  ACTION_NAME
+end
