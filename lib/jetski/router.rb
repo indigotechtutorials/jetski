@@ -75,10 +75,10 @@ module Jetski
 
     def host_images
       # TODO: Expand this to support more types of images.
-      
-      image_files = Dir[
-        File.join(Jetski.app_root, 'app/assets/images/*.jpg')
-      ]
+      file_ext_types = ["png", "jpg"]
+      image_files = Dir.glob(
+        file_ext_types.map { |ext| File.join(Jetski.app_root, "app/assets/images/*.#{ext}")  }
+      )
       image_files.each do |file_path|
         filename = file_path.split("/").last
         asset_url = "/#{filename}"
