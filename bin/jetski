@@ -16,9 +16,7 @@ class JetskiCLI < Thor
     gsub_file "#{name}/app/views/layouts/application.html", /APP_NAME/, name.capitalize
     gsub_file "#{name}/app/views/pages/home.html", /APP_NAME/, name.capitalize
     run "cd #{name} && bundle install"
-    say "Your app #{name} has been generated!"
-    say "Start you're app fast with this command"
-    say "cd #{name} && ruby ./start.rb"
+    say "🌊 Your app #{name} has been generated!"
   end
 
   desc "-v, --version", "show Jetski version"
