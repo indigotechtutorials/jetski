@@ -4,6 +4,7 @@ require 'optparse'
 require 'jetski'
 require 'thor'
 require_relative './jetski_cli_helpers/generate.rb'
+require_relative './jetski_cli_helpers/destroy.rb'
 
 class JetskiCLI < Thor
   include Thor::Actions
@@ -35,6 +36,9 @@ class JetskiCLI < Thor
 
   desc "generate", "generates resources in your jetski app"
   subcommand "generate", JetskiCLIHelpers::Generate
+
+  desc "destroy", "destroys a resource in your jetski app"
+  subcommand "destroy", JetskiCLIHelpers::Destroy
   
   def self.source_root
     File.join(File.dirname(__FILE__), 'templates')
