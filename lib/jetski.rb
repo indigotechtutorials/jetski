@@ -11,12 +11,6 @@ module Jetski
   # Debug stage add constants here for debugging.
   extend self
   def app_root
-    if ENV['JETSKI_PROJECT_PATH']
-      ENV['JETSKI_PROJECT_PATH']
-    elsif ENV['USE_DIR']
-      __dir__
-    else
-      Dir.pwd
-    end
+    Dir.pwd
   end
 end

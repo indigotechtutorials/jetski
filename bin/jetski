@@ -5,6 +5,7 @@ require 'jetski'
 require 'thor'
 require_relative './jetski_cli_helpers/generate.rb'
 require_relative './jetski_cli_helpers/destroy.rb'
+require 'bundler/setup'
 
 class JetskiCLI < Thor
   include Thor::Actions
@@ -32,6 +33,12 @@ class JetskiCLI < Thor
     compiled_routes.each do |route_obj|
       say "#{route_obj[:method]} #{route_obj[:url]} #{route_obj[:controller_name]}##{route_obj[:action_name]}"
     end
+  end
+
+  desc "server", "starts the jetski app"
+  def server
+    ENV['JETSKI_PROJECT_PATH'] = __dir__
+    Jetski::Server.new.call
   end
 
   desc "generate", "generates resources in your jetski app"
