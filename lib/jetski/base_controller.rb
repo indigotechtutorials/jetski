@@ -45,6 +45,11 @@ module Jetski
       render_template_file
     end
 
+    def redirect_to(url)
+      @performed_render = true
+      res.set_redirect(WEBrick::HTTPStatus::Found, url)
+    end
+
   private
     def render_template_file
       views_folder = File.join(Jetski.app_root, 'app/views')

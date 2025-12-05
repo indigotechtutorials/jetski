@@ -63,9 +63,9 @@ module Jetski
     end
 
     def host_css
-      css_files = Dir[File.join(Jetski.app_root,'app/assets/stylesheets/*.css')]
+      css_files = Dir[File.join(Jetski.app_root,'app/assets/stylesheets/**/*.css')]
       css_files.each do |file_path|
-        filename = file_path.split("/").last
+        filename  = file_path.split("app/assets/stylesheets/").last
         asset_url = "/#{filename}"
         server.mount_proc asset_url do |req, res|
           res.body = File.read(File.join(Jetski.app_root,"app/assets/stylesheets/#{filename}"))
