@@ -121,6 +121,23 @@ class ProjectsController < Jetski::BaseController
 end
 ```
 
+### Generators
+
+Similar to rails we have generator commands you can use to create new resources.
+
+#### Controllers
+
+Generate a new controller with a name and any actions that you want to generate as well.
+
+`jetski generate controller pages home about contact`
+
+This will create a pages controller with 3 actions home, about, and contact.
+
+To destroy a controller you can run the corresponding destroy command like so
+passing in the action names is not required but also won't break the command.
+
+`jetski destroy controller pages`
+
 ### Framework description
 
 now u can build websites even faster!
