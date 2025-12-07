@@ -1,7 +1,7 @@
 # This is the base controller of the library
 module Jetski
   class BaseController
-    attr_accessor :action_name, :controller_name, :controller_path
+    attr_accessor :action_name, :controller_name, :controller_path, :params
     attr_reader :res
     attr_reader :performed_render
 

@@ -15,6 +15,7 @@ Gem::Specification.new do |s|
   s.license       = "MIT"
   s.metadata['source_code_uri'] = 'https://github.com/indigotechtutorials/jetski'
   s.add_dependency('webrick', '~> 1.9.1')
-  s.add_development_dependency('thor', '~> 1.4.0')
+  s.add_dependency('thor', '~> 1.4.0')
+  s.add_dependency('ostruct', '~> 0.6.2')
   s.executables << "jetski"
 end

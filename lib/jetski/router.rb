@@ -41,18 +41,16 @@ module Jetski
             controller.action_name = action_name
             controller.controller_name = controller_name
             controller.controller_path = controller_path
+            controller.params = OpenStruct.new(JSON.parse(req.body)) if req.body
             controller.send(action_name)
             if !controller.performed_render && (request_method.upcase == "GET")
               controller.render
             end
-            # TODO: Need to setup redirects for other request types. POST/PUT/DELETE
           end
 
           if errors.any?
             res.body = errors.join(", ")
           end
-
-          # TODO: Set response content/type and status when rendering/redirecting or head
         end
       end
     end

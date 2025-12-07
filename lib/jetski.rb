@@ -6,6 +6,7 @@ require_relative './jetski/router'
 require "webrick"
 require "json"
 require "json"
+require "ostruct"
 
 module Jetski
   # Debug stage add constants here for debugging.
