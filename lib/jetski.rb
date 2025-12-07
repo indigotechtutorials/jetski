@@ -7,6 +7,7 @@ require "webrick"
 require "json"
 require "json"
 require "ostruct"
+require "erb"
 
 module Jetski
   # Debug stage add constants here for debugging.

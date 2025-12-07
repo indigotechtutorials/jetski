@@ -13,10 +13,10 @@ module JetskiCLIHelpers
           action_content += "\nACTION_NAME"
         end
         gsub_file(controller_file_path, /ACTION_NAME/, action_content.strip)
-        path_to_view = "app/views/#{name}/#{action_name}.html"
+        path_to_view = "app/views/#{name}/#{action_name}.html.erb"
 
         empty_directory("app/views/#{name}")
-        copy_file("views/example.html", path_to_view)
+        copy_file("views/example.html.erb", path_to_view)
         gsub_file(path_to_view, /CONTROLLER_NAME/, name)
         gsub_file(path_to_view, /ACTION_NAME/, action_name)
         gsub_file(path_to_view, /PATH_TO_VIEW/, path_to_view)

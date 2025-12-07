@@ -52,12 +52,14 @@ module Jetski
 
   private
     def render_template_file
+      require 'erb'
       views_folder = File.join(Jetski.app_root, 'app/views')
       assets_folder = File.join(Jetski.app_root, 'app/assets/stylesheets')
-      layout_content = File.read(File.join(views_folder, "layouts/application.html"))
       path_to_controller = controller_path[1..-1]
-      page_content = File.read(File.join(views_folder, path_to_controller, "#{action_name}.html"))
-      page_with_layout = layout_content.gsub("YIELD_CONTENT", page_content)
+      page_with_layout = process_erb(File.read(File.join(views_folder, "layouts/application.html.erb"))) do
+        process_erb(File.read(File.join(views_folder, path_to_controller, "#{action_name}.html.erb")))
+      end
+
       action_css_file = File.join(assets_folder, "#{path_to_controller}.css")
       css_content = if File.exist? action_css_file
         "<link rel='stylesheet' href='/#{path_to_controller}.css'>"
@@ -67,6 +69,11 @@ module Jetski
       page_with_css = page_with_layout.gsub("DYNAMIC_CSS", css_content)
       res.content_type = "text/html"
       res.body = page_with_css
+    end
+
+    def process_erb(content)
+      template = ERB.new(content)
+      template.result(binding)
     end
   end
 end

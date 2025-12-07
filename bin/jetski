@@ -15,8 +15,8 @@ class JetskiCLI < Thor
     FileUtils.mkdir_p(name)
     say "Creating #{name} app with Jetski!"
     directory "base", "#{name}"
-    gsub_file "#{name}/app/views/layouts/application.html", /APP_NAME/, name.capitalize
-    gsub_file "#{name}/app/views/pages/home.html", /APP_NAME/, name.capitalize
+    gsub_file "#{name}/app/views/layouts/application.html.erb", /APP_NAME/, name.capitalize
+    gsub_file "#{name}/app/views/pages/home.html.erb", /APP_NAME/, name.capitalize
     run "cd #{name} && bundle install"
     say "🌊 Your app #{name} has been generated!"
   end
