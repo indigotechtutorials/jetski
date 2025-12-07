@@ -54,8 +54,6 @@ I initially had used a routes file where you could define your routes manually s
 
 In my solution the routes are automatically created by the controller name and the action name it supports the default CRUD methods similar to rails and will set the HTTP method used automatically.
 
-For any other method name it will use a GET http method by default but to override this and use a custom HTTP method you can set the `request_method "post"` line before your controller method to change the request method it looks for.
-
 ```ruby
 class PostsController < Jetski::BaseController
   def new
@@ -88,10 +86,12 @@ Creates these route
   DELETE /posts/:id
 ```
 
+For any other method name it will use a GET http method by default but to override this and use a custom HTTP method you can set `@request_method = "post"` line in the action to change the request method it looks for.
+
 ```ruby
 class PostsController < Jetski::BaseController
-  request_method "post"
   def save
+    @request_method = "post"
     # do the saving logic
   end
 end
@@ -99,24 +99,23 @@ end
 
 Creates this route: "POST /posts/save"
 
-To set the root of the app simply add the "root" keyword before the method you want to use
+To set the root of the app simply set the @root variable to true before the method you want to use
 
 ```ruby
 class PagesController < Jetski::BaseController
-  root
   def home
+    @root = true
   end
 end
 ```
 
-Set a custom url path by setting the path option before your method
+Set a custom url path by setting the path variable in your action
 currently setting the path and request_method only work for non CRUD named actions because those urls and methods are automatically created for now.
 
 ```ruby
 class ProjectsController < Jetski::BaseController
-  path "/cool-custom-url"
-  request_method "post"
   def save
+    @path = "/cool-custom-path"
   end
 end
 ```

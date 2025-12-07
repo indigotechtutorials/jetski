@@ -1,7 +1,7 @@
 #!/usr/bin/env ruby
 
-require 'optparse'
 require 'jetski'
+require 'optparse'
 require 'thor'
 require_relative './jetski_cli_helpers/generate.rb'
 require_relative './jetski_cli_helpers/destroy.rb'

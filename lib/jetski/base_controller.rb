@@ -4,6 +4,7 @@ module Jetski
     attr_accessor :action_name, :controller_name, :controller_path, :params
     attr_reader :res
     attr_reader :performed_render
+    attr_writer :root, :path, :request_method
 
     class << self
       def request_method(method)
@@ -48,6 +49,18 @@ module Jetski
     def redirect_to(url)
       @performed_render = true
       res.set_redirect(WEBrick::HTTPStatus::Found, url)
+    end
+
+    def is_root?
+      @root == true
+    end
+
+    def custom_path
+      @path
+    end
+    
+    def custom_request_method
+      @request_method
     end
 
   private
