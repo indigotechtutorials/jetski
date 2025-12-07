@@ -166,7 +166,6 @@ cd jetski-app
 pwd # /Users/username/apps/your-jetski-app
 
 cd ~/jetski
-export JETSKI_PROJECT_PATH="/Users/username/apps/your-jetski-app"
 ruby -I lib ./bin/jetski routes
 ```
 

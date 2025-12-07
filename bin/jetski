@@ -37,7 +37,6 @@ class JetskiCLI < Thor
 
   desc "server", "starts the jetski app"
   def server
-    ENV['JETSKI_PROJECT_PATH'] = __dir__
     Jetski::Server.new.call
   end
 
