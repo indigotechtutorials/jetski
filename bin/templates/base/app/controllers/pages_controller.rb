@@ -1,5 +1,5 @@
 class PagesController < Jetski::BaseController
-  root
   def home
+    @root = true
   end
 end

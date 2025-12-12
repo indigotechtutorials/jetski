@@ -65,23 +65,53 @@ module Jetski
 
   private
     def render_template_file
-      require 'erb'
-      views_folder = File.join(Jetski.app_root, 'app/views')
-      assets_folder = File.join(Jetski.app_root, 'app/assets/stylesheets')
-      path_to_controller = controller_path[1..-1]
-      page_with_layout = process_erb(File.read(File.join(views_folder, "layouts/application.html.erb"))) do
+      view_render = page_with_layout.gsub("\n</head>", "#{content_for_head}\n</head>")
+      res.content_type = "text/html"
+      res.body = view_render
+    end
+
+    def page_with_layout
+      process_erb(File.read(File.join(views_folder, "layouts/application.html.erb"))) do
         process_erb(File.read(File.join(views_folder, path_to_controller, "#{action_name}.html.erb")))
       end
+    end
 
-      action_css_file = File.join(assets_folder, "#{path_to_controller}.css")
-      css_content = if File.exist? action_css_file
-        "<link rel='stylesheet' href='/#{path_to_controller}.css'>"
-      else
-        ''
+    def content_for_head
+      _content_for_head = ''
+
+      application_css_file = File.join(assets_folder, "stylesheets", "application.css")
+      if File.exist? application_css_file
+        _content_for_head += "<link rel='stylesheet' href='/application.css'>\n"
       end
-      page_with_css = page_with_layout.gsub("DYNAMIC_CSS", css_content)
-      res.content_type = "text/html"
-      res.body = page_with_css
+
+      controller_css_file = File.join(assets_folder, "stylesheets", "#{path_to_controller}.css")
+      if File.exist? controller_css_file
+        _content_for_head += "<link rel='stylesheet' href='/#{path_to_controller}.css'>\n"
+      end
+      
+      application_js_file = File.join(assets_folder, "javascript", "application.js")
+      if File.exist? application_js_file
+        _content_for_head += "<script src='application.js' defer></script>\n"
+      end
+
+      controller_js_file = File.join(assets_folder, "javascript", "#{path_to_controller}.js")
+      if File.exist? controller_js_file
+        _content_for_head += "<script src='/#{path_to_controller}.js' defer></script>\n"
+      end
+
+      _content_for_head
+    end
+    
+    def views_folder 
+      File.join(Jetski.app_root, 'app/views')
+    end
+
+    def assets_folder
+      File.join(Jetski.app_root, 'app/assets')
+    end
+
+    def path_to_controller 
+      controller_path[1..-1]
     end
 
     def process_erb(content)

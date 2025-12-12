@@ -11,7 +11,6 @@ require_relative './jetski/router/parser'
 require_relative './jetski/router'
 
 module Jetski
-  # Debug stage add constants here for debugging.
   extend self
   def app_root
     Dir.pwd

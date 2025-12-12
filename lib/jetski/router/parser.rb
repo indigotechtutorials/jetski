@@ -10,7 +10,12 @@ module Jetski
           controller_file_name = file_path.split('app/controllers')[1]
           controller_path = controller_file_name.gsub(/_controller.rb/, '')
           controller_name = controller_path.split("/").last
-          controller_classname = controller_path.split("/").reject(&:empty?).map(&:capitalize).join("::") + "Controller"
+          controller_classname = controller_path
+            .split("/")
+            .reject(&:empty?)
+            .map(&:capitalize)
+            .map { |c| c.split("_").map(&:capitalize).join }
+            .join("::") + "Controller"
           controller_class = Module.const_get(controller_classname)
           action_names = controller_class.instance_methods(false)
           base_opts = { 
