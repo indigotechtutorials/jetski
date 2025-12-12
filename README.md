@@ -48,6 +48,15 @@ You can use this to for image sources on the page like so
   <img src="/test-image.jpg" width="300px" height="400px"/>
 ```
 
+### Javascript
+
+To use custom Javascript files you can stick them in the `app/assets/javascript` folder
+they will be automatically included if the name of the file matches the controller name.
+
+for examples for a pages controller and home action it would automatically include the following JS file if it exists `app/assets/javascript/pages.js`
+
+The `application.js` file is automatically included on all pages
+
 ### Routing
 
 I initially had used a routes file where you could define your routes manually similar to Rails but than I thought that maybe it would be cool if we could have our routes be defined easier and automatically from the controller we are using. This will reduce the amount of files needed to change when building a new feature which does save time.
@@ -169,3 +178,9 @@ ruby -I lib ./bin/jetski routes
 ```
 
 This will print out the routes generated in that app.
+
+##### bundle exec 
+
+for testing jetski apps locally when starting the server you must use bundle exec to use the locally installed gem version instead of the globally built version which is not updated from recent code changes. 
+
+`bundle exec jetski server`# ruby-code-writer
