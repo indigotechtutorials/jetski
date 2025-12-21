@@ -1,6 +1,7 @@
 # This is the base controller of the library
 module Jetski
   class BaseController
+    include ReactiveForm
     attr_accessor :action_name, :controller_name, :controller_path, :params
     attr_reader :res, :performed_render
     attr_writer :root, :path, :request_method
@@ -83,6 +84,9 @@ module Jetski
       if File.exist? controller_js_file
         _content_for_head += "<script src='/#{path_to_controller}.js' defer></script>\n"
       end
+
+      # Add reactive form JS code
+      _content_for_head += "<script src='/reactive-form.js' defer></script>\n"
 
       _content_for_head
     end

@@ -20,16 +20,19 @@ module JetskiCLIHelpers
         ACTION_CONTENT
         action_nl_seperator = ((idx + 1) != actions.size) ? "\n\n" : ""
         insert_into_file(controller_file_path, "#{indent_code(action_content, 1)}#{action_nl_seperator}", before: "\nend")
-        path_to_view = "app/views/#{name}/#{action_name}.html.erb"
+        
+        if !["create", "create", "update", "destroy"].include?(action_name)
+          path_to_view = "app/views/#{name}/#{action_name}.html.erb"
 
-        empty_directory("app/views/#{name}")
-        create_file(path_to_view)
-        append_to_file path_to_view, <<~EXAMPLEFILE
-          <h1> #{name}##{action_name} </h1>
-          <p> edit the content of this page at app/views/#{path_to_view}/#{action_name}.html.erb </p>
-        EXAMPLEFILE
-          
-        say "🌊 View your new page at http://localhost:8000/#{name}/#{action_name}"
+          empty_directory("app/views/#{name}")
+          create_file(path_to_view)
+          append_to_file path_to_view, <<~EXAMPLEFILE
+            <h1> #{name}##{action_name} </h1>
+            <p> edit the content of this page at app/views/#{path_to_view}/#{action_name}.html.erb </p>
+          EXAMPLEFILE
+            
+          say "🌊 View your new page at http://localhost:8000/#{name}/#{action_name}"
+        end
       end
     end
         

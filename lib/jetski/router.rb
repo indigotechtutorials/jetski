@@ -56,7 +56,7 @@ module Jetski
     end
 
     def host_assets
-      host_css && host_images && host_javascript
+      host_css && host_images && host_javascript && host_reactive_form_js
     end
 
     def host_css
@@ -95,6 +95,13 @@ module Jetski
           res.content_type = "text/javascript"
           res.body = File.read(File.join(Jetski.app_root,"app/assets/javascript/#{filename}"))
         end
+      end
+    end
+
+    def host_reactive_form_js
+      server.mount_proc "/reactive-form.js" do |req, res|
+        res.content_type = "text/javascript"
+        res.body = File.read(File.join(__dir__, 'frontend/reactive_form.js'))
       end
     end
   end

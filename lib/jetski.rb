@@ -5,6 +5,7 @@ require "ostruct"
 require "erb"
 
 require_relative './jetski/version'
+require_relative './jetski/frontend/reactive_form'
 require_relative './jetski/base_controller'
 require_relative './jetski/server'
 require_relative './jetski/router/parser'
