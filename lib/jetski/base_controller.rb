@@ -2,7 +2,8 @@
 module Jetski
   class BaseController
     include ReactiveForm
-    attr_accessor :action_name, :controller_name, :controller_path, :params
+    attr_accessor :action_name, :controller_name, :controller_path, 
+      :params, :cookies
     attr_reader :res, :performed_render
     attr_writer :root, :path, :request_method
 
@@ -35,6 +36,14 @@ module Jetski
     def redirect_to(url)
       @performed_render = true
       res.set_redirect(WEBrick::HTTPStatus::Found, url)
+    end
+
+    def set_cookie(name, value)
+      res.cookies.push WEBrick::Cookie.new(name.to_s, value || "")
+    end
+
+    def get_cookie(name)
+      cookies&.find { |c| c.name == name.to_s }&.value
     end
 
     def is_root?

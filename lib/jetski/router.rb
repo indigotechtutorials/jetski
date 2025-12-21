@@ -42,6 +42,7 @@ module Jetski
             controller.controller_name = controller_name
             controller.controller_path = controller_path
             controller.params = OpenStruct.new(JSON.parse(req.body)) if req.body
+            controller.cookies = req.cookies
             controller.send(action_name)
             if !controller.performed_render && (request_method.upcase == "GET")
               controller.render
