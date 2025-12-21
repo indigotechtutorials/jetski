@@ -2,23 +2,8 @@
 module Jetski
   class BaseController
     attr_accessor :action_name, :controller_name, :controller_path, :params
-    attr_reader :res
-    attr_reader :performed_render
+    attr_reader :res, :performed_render
     attr_writer :root, :path, :request_method
-
-    class << self
-      def request_method(method)
-        # Really just a shell method since Im using File.readlines to use the logic in routes.
-      end
-
-      def root
-        # another shell method
-      end
-
-      def path(location)
-        # Another shell method
-      end
-    end
 
     def initialize(res)
       @res = res

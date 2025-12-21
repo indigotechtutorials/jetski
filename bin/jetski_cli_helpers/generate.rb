@@ -18,7 +18,8 @@ module JetskiCLIHelpers
 
           end
         ACTION_CONTENT
-        insert_into_file(controller_file_path, indent_code(action_content, 1), before: "\nend")
+        action_nl_seperator = ((idx + 1) != actions.size) ? "\n\n" : ""
+        insert_into_file(controller_file_path, "#{indent_code(action_content, 1)}#{action_nl_seperator}", before: "\nend")
         path_to_view = "app/views/#{name}/#{action_name}.html.erb"
 
         empty_directory("app/views/#{name}")
@@ -34,7 +35,8 @@ module JetskiCLIHelpers
         
   private
     def indent_code(code, level = 1)
-      code.strip.split("\n").map { |l| (1..level).map { |lvl| "  " }.join + l }.join("\n")
+      code.strip.split("\n").map { |l| 
+        (1..level).map { |lvl| "  " }.join + l }.join("\n")
     end
   end
 end

@@ -56,7 +56,6 @@ module Jetski
     end
 
     def host_assets
-      # Render stylesheets css via url
       host_css && host_images && host_javascript
     end
 
@@ -73,8 +72,7 @@ module Jetski
     end
 
     def host_images
-      # TODO: Expand this to support more types of images.
-      file_ext_types = ["png", "jpg"]
+      file_ext_types = ["png", "jpg"] # TODO: Expand this to support more types of images.
       image_files = Dir.glob(
         file_ext_types.map { |ext| File.join(Jetski.app_root, "app/assets/images/*.#{ext}")  }
       )

@@ -10,12 +10,6 @@ After installing the jetski gem you can use the jetski command in your terminal 
 
 `jetski new my-app`
 
-### Example app
-
-This is an app I built which uses the jetski library and shows you the structure of a Jetski app.
-
-https://github.com/indigotechtutorials/ruby-web-app-fun
-
 ### Hosting Assets
 
 To include external asset files such as CSS stylesheets and images you can put them in the assets folder under the corresponding file type
