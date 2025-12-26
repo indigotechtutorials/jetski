@@ -7,7 +7,7 @@ module Jetski
         @_db ||= SQLite3::Database.new "test.db"
       end
 
-      def gen_sql(table_name:, field_names:)
+      def create_table_sql(table_name:, field_names:)
         _gen_sql = ""
         _gen_sql += "create table #{table_name} (\n"
         # TODO: add default fields

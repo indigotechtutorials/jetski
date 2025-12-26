@@ -39,7 +39,7 @@ module JetskiCLIHelpers
 
     desc "model NAME FIELD_NAMES", "Creates a model with matching fields"
     def model(name, *field_names)
-      db.execute gen_sql(table_name: name, field_names: field_names)
+      db.execute create_table_sql(table_name: name, field_names: field_names)
       model_file_path = "app/models/#{name}.rb"
       create_file model_file_path
       append_to_file model_file_path, <<~MODEL

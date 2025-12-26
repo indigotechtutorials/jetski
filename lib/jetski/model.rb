@@ -15,16 +15,33 @@ module Jetski
       end
 
       def all
+        columns, *rows = db.execute2( "select * from #{pluralized_table_name}" )
+        _all = []
+        rows.map do |row|
+          _all << format_model_obj(row, columns)
+        end
+        _all
+      end
+
+      def pluck_rows
         db.execute( "select * from #{pluralized_table_name}" )
       end
 
       def count
-        all.size
+        pluck_rows.size
       end
 
       def attributes
         columns, *rows = db.execute2( "select * from #{pluralized_table_name}" )
         columns
+      end
+
+      def last
+        format_model_obj(pluck_rows.last)
+      end
+
+      def first
+        format_model_obj(pluck_rows.first)
       end
     private
       def table_name
@@ -37,6 +54,15 @@ module Jetski
         else
           table_name + "s"
         end
+      end
+
+      def format_model_obj(row, columns = nil)
+        columns ||= attributes
+        row_obj = {}
+        columns.each.with_index do |col, idx|
+          row_obj[col] = row[idx]
+        end
+        OpenStruct.new(row_obj)
       end
     end
   end

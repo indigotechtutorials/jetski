@@ -10,7 +10,7 @@ module JetskiCLIHelpers
 
     desc "create_table NAME COLUMN_NAMES", "Creates a new table in your database"
     def create_table(name, *fields)
-      db.execute gen_sql(table_name: name, field_names: fields)
+      db.execute create_table_sql(table_name: name, field_names: fields)
     end
   end
 end
