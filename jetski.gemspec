@@ -18,5 +18,7 @@ Gem::Specification.new do |s|
   s.add_dependency('thor', '~> 1.4.0')
   s.add_dependency('ostruct', '~> 0.6.2')
   s.add_dependency('erb', '~> 5.1.2')
+  s.add_dependency('sqlite3', '~> 2.8.0')
+  s.add_dependency('pry', '~> 0.15.2')
   s.executables << "jetski"
 end

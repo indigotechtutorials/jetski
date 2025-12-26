@@ -1,10 +1,10 @@
 module Jetski
   class Router
     module Parser
+      include Jetski::Router::SharedMethods
       extend self
       def compile_routes
         auto_found_routes = []
-        controller_file_paths = Dir.glob([File.join(Jetski.app_root, 'app', 'controllers', '**', '*_controller.rb')])
         controller_file_paths.each do |file_path|
           require_relative file_path
           controller_file_name = file_path.split('app/controllers')[1]

@@ -6,6 +6,8 @@ module Jetski
     def call
       server = WEBrick::HTTPServer.new Port: 8000
 
+      Jetski::Autoloader.call
+      
       Jetski::Router.new(server).call
 
       trap 'INT' do server.shutdown end

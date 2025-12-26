@@ -41,6 +41,8 @@ module Jetski
             controller.action_name = action_name
             controller.controller_name = controller_name
             controller.controller_path = controller_path
+            # TODO: Check how body is being passed in and parse it correctly.
+            # Currently is breaking with regular html form submissions
             controller.params = OpenStruct.new(JSON.parse(req.body)) if req.body
             controller.cookies = req.cookies
             controller.send(action_name)
