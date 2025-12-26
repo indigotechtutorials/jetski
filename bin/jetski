@@ -3,8 +3,14 @@
 require 'jetski'
 require 'optparse'
 require 'thor'
+require "sqlite3"
+require "pry"
+
+require_relative './jetski_cli_helpers/shared_methods.rb'
 require_relative './jetski_cli_helpers/generate.rb'
 require_relative './jetski_cli_helpers/destroy.rb'
+require_relative './jetski_cli_helpers/database.rb'
+
 require 'bundler/setup'
 
 class JetskiCLI < Thor
@@ -40,11 +46,22 @@ class JetskiCLI < Thor
     Jetski::Server.new.call
   end
 
+  desc "console", "opens jetski console"
+  def console
+    # TODO: Open console and include all controllers/models/etc
+    Jetski::Autoloader.call
+    Jetski::Autoloader.load_controllers
+    Pry.start
+  end
+
   desc "generate", "generates resources in your jetski app"
   subcommand "generate", JetskiCLIHelpers::Generate
 
   desc "destroy", "destroys a resource in your jetski app"
   subcommand "destroy", JetskiCLIHelpers::Destroy
+
+  desc "db", "commands related to database"
+  subcommand "db", JetskiCLIHelpers::Database
   
   def self.source_root
     File.join(File.dirname(__FILE__), 'templates')
