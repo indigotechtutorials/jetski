@@ -161,7 +161,7 @@ Similar to rails jetski has a console you can open which is simply a pry shell b
 
 inside of the console you can interact with the models similar to rails by using the methods available.
 
-```
+```ruby
   Post.create(title: "New post", body: "This is an example post")
   Post.count # 1
   Post.last  # returns the last post
@@ -169,6 +169,21 @@ inside of the console you can interact with the models similar to rails by using
   Post.all # returns an array of all objects
 ```
 
+### Seed database
+
+You can optionally create a seed.rb file in your app where you can write code to create sample records in your app. All of youre models will be available in this file similar to rails seeds file.
+
+create a `./seed.rb` file
+
+```ruby
+10.times do
+  Post.create(title: "New post", body: "example post body")
+end
+```
+
+then run the command in terminal
+
+`jetski db seed`
 
 ### Framework description
 
