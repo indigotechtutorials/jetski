@@ -43,7 +43,9 @@ module Jetski
             controller.controller_path = controller_path
             # TODO: Check how body is being passed in and parse it correctly.
             # Currently is breaking with regular html form submissions
-            controller.params = OpenStruct.new(JSON.parse(req.body)) if req.body
+            if req.body
+              controller.params = parse_body(req.body, req.content_type)
+            end
             controller.cookies = req.cookies
             controller.send(action_name)
             if !controller.performed_render && (request_method.upcase == "GET")
@@ -105,6 +107,17 @@ module Jetski
       server.mount_proc "/reactive-form.js" do |req, res|
         res.content_type = "text/javascript"
         res.body = File.read(File.join(__dir__, 'frontend/reactive_form.js'))
+      end
+    end
+  private
+    def parse_body(body, content_type = '')
+      case content_type
+      when "application/x-www-form-urlencoded"
+        Rack::Utils.parse_nested_query body
+      when "application/json"
+        OpenStruct.new(JSON.parse(body))
+      else
+        body
       end
     end
   end

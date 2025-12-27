@@ -61,6 +61,7 @@ module Jetski
       end
 
       def format_model_obj(row, columns = nil)
+        return unless row
         columns ||= attributes
         row_obj = {}
         columns.each.with_index do |col, idx|
