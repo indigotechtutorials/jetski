@@ -153,6 +153,23 @@ to remove the model you can run the corresponding destroy command
 
 `jetski destroy model post`
 
+### Console
+
+Similar to rails jetski has a console you can open which is simply a pry shell but with all of your objects from your app loaded for you to access meaning you can access your models and interact with them to debug or explore your codebase.
+
+`jetski console`
+
+inside of the console you can interact with the models similar to rails by using the methods available.
+
+```
+  Post.create(title: "New post", body: "This is an example post")
+  Post.count # 1
+  Post.last  # returns the last post
+
+  Post.all # returns an array of all objects
+```
+
+
 ### Framework description
 
 now u can build websites even faster!
