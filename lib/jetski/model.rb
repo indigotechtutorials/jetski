@@ -8,7 +8,7 @@ module Jetski
         key_names = args.map { |k, v| k }
         
         key_names.append "created_at"
-        data_values.append Time.now
+        data_values.append Time.now.to_s
 
         sql_command = <<~SQL
           INSERT INTO #{pluralized_table_name} (#{key_names.join(", ")}) 
