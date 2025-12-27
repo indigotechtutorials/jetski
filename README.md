@@ -10,6 +10,7 @@ After installing the jetski gem you can use the jetski command in your terminal 
 
 `jetski new my-app`
 
+
 ### Hosting Assets
 
 To include external asset files such as CSS stylesheets and images you can put them in the assets folder under the corresponding file type
@@ -139,6 +140,18 @@ To destroy a controller you can run the corresponding destroy command like so
 passing in the action names is not required but also won't break the command.
 
 `jetski destroy controller pages`
+
+#### Models
+
+Generate a new model with a name and the fields you want on the model.
+
+`jetski generate model post title body:text`
+
+You can specify the data type as any valid data type supported by Sqlite3. using a colon similar to how rails does it.
+
+to remove the model you can run the corresponding destroy command
+
+`jetski destroy model post`
 
 ### Framework description
 
