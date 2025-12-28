@@ -42,8 +42,9 @@ class JetskiCLI < Thor
   end
 
   desc "server", "starts the jetski app"
+  method_option :port, :aliases => "-p", :desc => "Configure which port number to run server on"
   def server
-    Jetski::Server.new.call
+    Jetski::Server.new(port: options[:port]).call
   end
 
   desc "console", "opens jetski console"

@@ -1,6 +1,11 @@
 module Jetski
   class Model
     extend Jetski::Database::Base
+
+    def initialize(**args)
+      
+    end
+
     class << self
       def create(**args)
         return puts "#{table_name.capitalize}.create was called with no args" if args.size == 0
