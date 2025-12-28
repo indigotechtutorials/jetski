@@ -10,6 +10,7 @@ After installing the jetski gem you can use the jetski command in your terminal 
 
 `jetski new my-app`
 
+
 ### Hosting Assets
 
 To include external asset files such as CSS stylesheets and images you can put them in the assets folder under the corresponding file type
@@ -139,6 +140,50 @@ To destroy a controller you can run the corresponding destroy command like so
 passing in the action names is not required but also won't break the command.
 
 `jetski destroy controller pages`
+
+#### Models
+
+Generate a new model with a name and the fields you want on the model.
+
+`jetski generate model post title body:text`
+
+You can specify the data type as any valid data type supported by Sqlite3. using a colon similar to how rails does it.
+
+to remove the model you can run the corresponding destroy command
+
+`jetski destroy model post`
+
+### Console
+
+Similar to rails jetski has a console you can open which is simply a pry shell but with all of your objects from your app loaded for you to access meaning you can access your models and interact with them to debug or explore your codebase.
+
+`jetski console`
+
+inside of the console you can interact with the models similar to rails by using the methods available.
+
+```ruby
+  Post.create(title: "New post", body: "This is an example post")
+  Post.count # 1
+  Post.last  # returns the last post
+
+  Post.all # returns an array of all objects
+```
+
+### Seed database
+
+You can optionally create a seed.rb file in your app where you can write code to create sample records in your app. All of youre models will be available in this file similar to rails seeds file.
+
+create a `./seed.rb` file
+
+```ruby
+10.times do
+  Post.create(title: "New post", body: "example post body")
+end
+```
+
+then run the command in terminal
+
+`jetski db seed`
 
 ### Framework description
 

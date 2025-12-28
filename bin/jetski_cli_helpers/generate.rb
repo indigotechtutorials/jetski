@@ -1,7 +1,8 @@
 require 'thor'
 module JetskiCLIHelpers
   class Generate < Thor
-    include Thor::Actions
+    include Thor::Actions, JetskiCLIHelpers::SharedMethods, 
+      Jetski::Database::Base
     desc "controller NAME ACTION_NAMES", "Create a controller with matching actions"
     def controller(name, *actions)
       controller_file_path = "app/controllers/#{name}_controller.rb"
@@ -35,11 +36,17 @@ module JetskiCLIHelpers
         end
       end
     end
-        
-  private
-    def indent_code(code, level = 1)
-      code.strip.split("\n").map { |l| 
-        (1..level).map { |lvl| "  " }.join + l }.join("\n")
+
+    desc "model NAME FIELD_NAMES", "Creates a model with matching fields"
+    def model(name, *field_names)
+      db.execute create_table_sql(table_name: name, field_names: field_names)
+      model_file_path = "app/models/#{name}.rb"
+      create_file model_file_path
+      append_to_file model_file_path, <<~MODEL
+        class #{name.capitalize} < Jetski::Model
+          
+        end
+      MODEL
     end
   end
 end
