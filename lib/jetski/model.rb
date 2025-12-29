@@ -3,7 +3,23 @@ module Jetski
     extend Jetski::Database::Base
 
     def initialize(**args)
-      
+      @virtual_attributes = {}
+      args.each do |k, v|
+        @virtual_attributes[k] = v
+        self.class.class_eval do 
+          define_method(k) { v }
+        end
+      end
+      self.class.class_eval do 
+        define_method(:inspect) do
+          inspect_str = "#<Post:#{object_id}"
+          args.each do |k, v|
+            inspect_str += " #{k}=\"#{v}\""
+          end
+          inspect_str += ">"
+          inspect_str
+        end
+      end
     end
 
     class << self

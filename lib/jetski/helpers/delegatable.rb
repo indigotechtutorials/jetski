@@ -1,5 +1,3 @@
-require "pry"
-
 module Jetski
   module Helpers
     module Delegatable
@@ -8,7 +6,7 @@ module Jetski
       def delegate(*delegatables, to:)
         delegatables.each do |method_name|
           define_method method_name do
-            self.public_send(to).public_send(method_name)
+            public_send(to).public_send(method_name)
           end
         end
       end
