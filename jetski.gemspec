@@ -9,7 +9,8 @@ Gem::Specification.new do |s|
   s.email       = "indigo@tech.tut"
   s.files       = [
                     Dir.glob("bin/**/*"), 
-                    Dir.glob("lib/**/*"), 
+                    Dir.glob("lib/**/*"),
+                    Dir.glob("templates/**/*"),
                   ].flatten
   s.homepage    = "https://rubygems.org/gems/jetski"
   s.license       = "MIT"

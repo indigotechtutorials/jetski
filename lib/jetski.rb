@@ -15,6 +15,8 @@ require_relative './jetski/autoloader'
 require_relative './jetski/server'
 require_relative './jetski/database/base'
 require_relative './jetski/model'
+require_relative './jetski/helpers/delegatable'
+require_relative './jetski/view_renderer'
 
 module Jetski
   extend self

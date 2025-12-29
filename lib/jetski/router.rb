@@ -41,8 +41,6 @@ module Jetski
             controller.action_name = action_name
             controller.controller_name = controller_name
             controller.controller_path = controller_path
-            # TODO: Check how body is being passed in and parse it correctly.
-            # Currently is breaking with regular html form submissions
             if req.body
               controller.params = parse_body(req.body, req.content_type)
             end

@@ -222,4 +222,4 @@ This will print out the routes generated in that app.
 
 for testing jetski apps locally when starting the server you must use bundle exec to use the locally installed gem version instead of the globally built version which is not updated from recent code changes. 
 
-`bundle exec jetski server`# ruby-code-writer
+`bundle exec jetski server`

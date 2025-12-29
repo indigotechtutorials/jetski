@@ -49,7 +49,6 @@ class JetskiCLI < Thor
 
   desc "console", "opens jetski console"
   def console
-    # TODO: Open console and include all controllers/models/etc
     Jetski::Autoloader.call
     Jetski::Autoloader.load_controllers
     Pry.start
@@ -65,7 +64,7 @@ class JetskiCLI < Thor
   subcommand "db", JetskiCLIHelpers::Database
   
   def self.source_root
-    File.join(File.dirname(__FILE__), 'templates')
+    File.join(File.dirname(__FILE__), '..', 'templates')
   end
 end
 
