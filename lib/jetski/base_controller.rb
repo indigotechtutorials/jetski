@@ -30,8 +30,8 @@ module Jetski
         res.body = args[:json].to_json
         return
       end
-      
-      ViewRenderer.new(self).call # need to move this view render to a seperate class
+
+      ViewRenderer.new(self).call
     end
 
     def redirect_to(url)

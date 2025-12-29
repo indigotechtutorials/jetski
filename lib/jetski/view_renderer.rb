@@ -1,6 +1,8 @@
 module Jetski
   class ViewRenderer
     extend Jetski::Helpers::Delegatable
+    include Jetski::Helpers::ViewHelpers
+    
     attr_reader :errors, :controller
     delegate :res, :action_name, :controller_path, to: :controller
     
@@ -29,7 +31,11 @@ module Jetski
 
     def process_erb(content)
       template = ERB.new(content)
-      template.result(binding)
+      # Perserve instance variables to view render
+      # @posts from controller to posts/index.html.erb
+      controller.instance_eval do
+        template.result(binding)
+      end
     rescue => e
       @errors << e
       nil
