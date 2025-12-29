@@ -17,6 +17,7 @@ module Jetski
     end
   private
     def error_screen
+      # TODO: Make better error screen
       res.body = "<h1> Errors: #{errors.map {|e| e }.join(", ")} </h1>"
     end
 
