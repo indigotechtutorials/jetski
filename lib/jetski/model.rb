@@ -4,16 +4,25 @@ module Jetski
 
     def initialize(**args)
       @virtual_attributes = {}
+      
       args.each do |k, v|
         @virtual_attributes[k] = v
+      end
+      
+      @virtual_attributes["id"] = ""
+      @virtual_attributes["created_at"] = ""
+      @virtual_attributes["updated_at"] = ""
+
+      @virtual_attributes.each do |k, v|
         self.class.class_eval do 
           define_method(k) { v }
         end
       end
+
       self.class.class_eval do 
         define_method(:inspect) do
           inspect_str = "#<Post:#{object_id}"
-          args.each do |k, v|
+          @virtual_attributes.each do |k, v|
             inspect_str += " #{k}=\"#{v}\""
           end
           inspect_str += ">"
@@ -88,7 +97,7 @@ module Jetski
         columns.each.with_index do |col, idx|
           row_obj[col] = row[idx]
         end
-        OpenStruct.new(row_obj)
+        new(**row_obj)
       end
     end
   end
