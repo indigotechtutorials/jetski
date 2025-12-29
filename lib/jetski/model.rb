@@ -9,9 +9,9 @@ module Jetski
         @virtual_attributes[k] = v
       end
       
-      @virtual_attributes["id"] = ""
-      @virtual_attributes["created_at"] = ""
-      @virtual_attributes["updated_at"] = ""
+      @virtual_attributes["id"]         ||= ""
+      @virtual_attributes["created_at"] ||= ""
+      @virtual_attributes["updated_at"] ||= ""
 
       @virtual_attributes.each do |k, v|
         self.class.class_eval do 
@@ -21,7 +21,8 @@ module Jetski
 
       self.class.class_eval do 
         define_method(:inspect) do
-          inspect_str = "#<Post:#{object_id}"
+          post_obj_id = object_id
+          inspect_str = "#<Post:#{post_obj_id}"
           @virtual_attributes.each do |k, v|
             inspect_str += " #{k}=\"#{v}\""
           end
@@ -37,8 +38,13 @@ module Jetski
         data_values = args.map { |k,v| v }
         key_names = args.map { |k, v| k }
         
+        # Set default values on create
+
         key_names.append "created_at"
         data_values.append Time.now.to_s
+
+        key_names.append "id"
+        data_values.append(count + 1)
 
         sql_command = <<~SQL
           INSERT INTO #{pluralized_table_name} (#{key_names.join(", ")}) 
@@ -46,6 +52,13 @@ module Jetski
         SQL
 
         db.execute(sql_command, data_values)
+
+        post_attributes = {}
+        key_names.each.with_index do |k, i|
+          post_attributes[k] = data_values[i]
+        end
+
+        new(**post_attributes)
       end
 
       def all
