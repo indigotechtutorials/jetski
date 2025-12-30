@@ -3,6 +3,7 @@ require "json"
 require "ostruct"
 require "erb"
 require "rack"
+require "sqlite3"
 
 require_relative './jetski/version'
 require_relative './jetski/frontend/reactive_form'

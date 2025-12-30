@@ -3,7 +3,6 @@
 require 'jetski'
 require 'optparse'
 require 'thor'
-require "sqlite3"
 require "pry"
 
 require_relative './jetski_cli_helpers/shared_methods.rb'
