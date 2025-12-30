@@ -1,7 +1,7 @@
 module Jetski
   class ViewRenderer
-    extend Jetski::Helpers::Delegatable
     include Jetski::Helpers::ViewHelpers
+    extend Jetski::Helpers::Delegatable
     
     attr_reader :errors, :controller
     delegate :res, :action_name, :controller_path, to: :controller
@@ -33,12 +33,20 @@ module Jetski
       template = ERB.new(content)
       # Perserve instance variables to view render
       # @posts from controller to posts/index.html.erb
-      controller.instance_eval do
-        template.result(binding)
-      end
+      # controller.class.class_eval problem is you still have render defined there
+      grab_instance_variables
+      template.result(binding)
     rescue => e
       @errors << e
       nil
+    end
+
+    def grab_instance_variables
+      variables_from_controller = controller.instance_variables.filter { |var| !Jetski::BaseController::RESERVED_INSTANCE_VARIABLES.include?(var) }
+      variables_from_controller.each do |inst_var|
+        value = controller.instance_variable_get(inst_var)
+        instance_variable_set(inst_var, value)
+      end
     end
 
     def content_for_head

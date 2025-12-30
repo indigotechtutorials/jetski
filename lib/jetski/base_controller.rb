@@ -1,6 +1,12 @@
 # This is the base controller of the library
 module Jetski
   class BaseController
+    RESERVED_INSTANCE_VARIABLES = [
+        :@res, :@performed_render, :@action_name, 
+        :@controller_name, :@controller_path, :@cookies, :@root,
+        :@request_method, :@path
+    ]
+
     include ReactiveForm
     attr_accessor :action_name, :controller_name, :controller_path, 
       :params, :cookies
