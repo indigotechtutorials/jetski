@@ -33,7 +33,7 @@ module Jetski
       template = ERB.new(content)
       # Perserve instance variables to view render
       # @posts from controller to posts/index.html.erb
-      # controller.class.class_eval problem is you still have render defined there
+
       grab_instance_variables
       template.result(binding)
     rescue => e

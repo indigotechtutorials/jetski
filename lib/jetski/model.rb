@@ -3,33 +3,21 @@ module Jetski
     extend Jetski::Database::Base
 
     def initialize(**args)
-      @virtual_attributes = {}
-      
-      args.each do |k, v|
-        @virtual_attributes[k] = v
-      end
-      
-      @virtual_attributes["id"]         ||= ""
-      @virtual_attributes["created_at"] ||= ""
-      @virtual_attributes["updated_at"] ||= ""
+      # TODO: Need to fix code
+      # Cannot redefine methods every time we initialize a new object.
+      # need to define available methods on post when loading model
+      @virtual_attributes = args
+    end
 
-      @virtual_attributes.each do |k, v|
-        self.class.class_eval do 
-          define_method(k) { v }
-        end
+    def inspect
+      post_obj_id = object_id
+      inspect_str = "#<Post:#{post_obj_id}"
+      self.class.model_attributes.each do |attribute_name|
+        attribute_value = @virtual_attributes[attribute_name]
+        inspect_str += " #{attribute_name}=\"#{attribute_value}\""
       end
-
-      self.class.class_eval do 
-        define_method(:inspect) do
-          post_obj_id = object_id
-          inspect_str = "#<Post:#{post_obj_id}"
-          @virtual_attributes.each do |k, v|
-            inspect_str += " #{k}=\"#{v}\""
-          end
-          inspect_str += ">"
-          inspect_str
-        end
-      end
+      inspect_str += ">"
+      inspect_str
     end
 
     def destroy!
@@ -52,8 +40,10 @@ module Jetski
         key_names.append "created_at"
         data_values.append Time.now.to_s
 
+        current_post_count = (count || 0)
+        post_id = current_post_count + 1
         key_names.append "id"
-        data_values.append(count + 1)
+        data_values.append(post_id)
 
         sql_command = <<~SQL
           INSERT INTO #{pluralized_table_name} (#{key_names.join(", ")}) 
@@ -68,6 +58,19 @@ module Jetski
         end
 
         new(**post_attributes)
+      end
+
+      # Careful methods / delete all records from table
+      def destroy_all! 
+        db.execute("DELETE from #{pluralized_table_name}")
+      end
+
+      def define_attribute_methods
+        model_attributes.each do |attribute|
+          define_method attribute do
+            @virtual_attributes[attribute]
+          end
+        end
       end
 
       def all
@@ -110,6 +113,10 @@ module Jetski
         else
           table_name + "s"
         end
+      end
+      
+      def model_attributes
+        attributes.concat(["id", "created_at", "updated_at"])
       end
 
     private
