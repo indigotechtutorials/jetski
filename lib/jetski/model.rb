@@ -3,16 +3,13 @@ module Jetski
     extend Jetski::Database::Base
 
     def initialize(**args)
-      # TODO: Need to fix code
-      # Cannot redefine methods every time we initialize a new object.
-      # need to define available methods on post when loading model
       @virtual_attributes = args
     end
 
     def inspect
       post_obj_id = object_id
-      inspect_str = "#<Post:#{post_obj_id}"
-      self.class.model_attributes.each do |attribute_name|
+      inspect_str = "#<#{self.class.to_s}:#{post_obj_id}"
+      self.class.attributes.each do |attribute_name|
         attribute_value = @virtual_attributes[attribute_name]
         inspect_str += " #{attribute_name}=\"#{attribute_value}\""
       end
@@ -66,7 +63,7 @@ module Jetski
       end
 
       def define_attribute_methods
-        model_attributes.each do |attribute|
+        attributes.each do |attribute|
           define_method attribute do
             @virtual_attributes[attribute]
           end
@@ -91,6 +88,7 @@ module Jetski
       end
 
       def attributes
+        # TODO: Find a more performant way to get the column names from a table
         columns, *rows = db.execute2( "select * from #{pluralized_table_name}" )
         columns
       end
@@ -114,11 +112,6 @@ module Jetski
           table_name + "s"
         end
       end
-      
-      def model_attributes
-        attributes.concat(["id", "created_at", "updated_at"])
-      end
-
     private
       def format_model_obj(row, columns = nil)
         return unless row

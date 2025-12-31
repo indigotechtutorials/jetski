@@ -18,7 +18,6 @@ module Jetski
         _gen_sql += "create table #{pluralized_table_name} (\n"
         
         # Default fields on all models
-        
         _gen_sql += "  created_at datetime,\n"
         _gen_sql += "  updated_at datetime,\n"
         _gen_sql += "  id integer,\n"
