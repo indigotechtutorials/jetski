@@ -32,6 +32,15 @@ module Jetski
       end
     end
 
+    def destroy!
+      # Destroy record: remove from db
+      delete_sql = <<~SQL
+        DELETE from #{self.class.pluralized_table_name} WHERE id=?
+      SQL
+      self.class.db.execute(delete_sql, id)
+      nil
+    end
+
     class << self
       def create(**args)
         return puts "#{table_name.capitalize}.create was called with no args" if args.size == 0
@@ -90,7 +99,7 @@ module Jetski
       def first
         format_model_obj(pluck_rows.first)
       end
-    private
+      
       def table_name
         self.to_s.downcase
       end
@@ -103,6 +112,7 @@ module Jetski
         end
       end
 
+    private
       def format_model_obj(row, columns = nil)
         return unless row
         columns ||= attributes
