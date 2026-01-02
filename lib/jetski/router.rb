@@ -23,7 +23,7 @@ module Jetski
 
         server.mount_proc served_url do |req, res|
           errors = []
-          if (request_method!= req.request_method)
+          if (request_method != req.request_method)
             errors << "Wrong request was performed"
           end
           if errors.empty?
