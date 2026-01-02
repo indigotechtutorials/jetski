@@ -3,11 +3,11 @@ module Jetski
   class BaseController
     RESERVED_INSTANCE_VARIABLES = [
         :@res, :@performed_render, :@action_name, 
-        :@controller_name, :@controller_path, :@cookies, :@root,
-        :@request_method, :@path
+        :@controller_name, :@controller_path, :@cookies
     ]
 
     include ReactiveForm
+    extend Jetski::Helpers::RouteHelpers
     attr_accessor :action_name, :controller_name, :controller_path, 
       :params, :cookies
     attr_reader :res, :performed_render
@@ -51,18 +51,6 @@ module Jetski
 
     def get_cookie(name)
       cookies&.find { |c| c.name == name.to_s }&.value
-    end
-
-    def is_root?
-      @root == true
-    end
-
-    def custom_path
-      @path
-    end
-    
-    def custom_request_method
-      @request_method
     end
   end
 end

@@ -24,18 +24,34 @@ module Jetski
             controller_name: controller_name,
             controller_path: controller_path,
           }
+          route_opts_hash = controller_class.instance_variable_get(:@custom_route_opts)
           action_names.each do |action_name|
             action_name = action_name.to_s
+            route_opts = route_opts_hash.fetch(action_name.to_sym, {})
+            custom_request_method = route_opts.fetch(:request_method, nil)
+            is_root = route_opts.fetch(:root, nil)
+            custom_path = route_opts.fetch(:path, nil)
+            
+            url_to_use = proc do |url|
+              if is_root
+                "/"
+              elsif custom_path
+                custom_path
+              else
+                url
+              end
+            end
+
             case action_name
             when "new"
               auto_found_routes << base_opts.merge({
-                url: controller_path + "/new",
+                url: url_to_use.call(controller_path + "/new"),
                 method: "GET",
                 action_name: action_name,
               })
             when "create"
               auto_found_routes << base_opts.merge({
-                url: controller_path,
+                url: url_to_use.call(controller_path),
                 method: "POST",
                 action_name: action_name,
               })
@@ -53,21 +69,23 @@ module Jetski
               })
             when "update"
               auto_found_routes << base_opts.merge({
-                url: controller_path + "/:id",
+                url: url_to_use.call(controller_path + "/:id"),
                 method: "PUT",
                 action_name: action_name,
               })
             when "destroy"
               auto_found_routes << base_opts.merge({
-                url: controller_path + "/:id",
+                url: url_to_use.call(controller_path + "/:id"),
                 method: "DELETE",
                 action_name: action_name,
               })
+            when "index"
+              auto_found_routes << base_opts.merge({
+                url: url_to_use.call(controller_path),
+                method: "GET",
+                action_name: action_name,
+              })
             else
-              tmp_controller_instance = controller_class.new("")
-              tmp_controller_instance.send(action_name)
-              is_root = tmp_controller_instance.is_root?
-              custom_path = tmp_controller_instance.custom_path 
               url_to_use = if is_root
                 "/"
               elsif custom_path
@@ -76,7 +94,6 @@ module Jetski
                 url_friendly_action_name = action_name.split("_").join("-")
                 controller_path + "/#{url_friendly_action_name}"
               end
-              custom_request_method = tmp_controller_instance.custom_request_method
 
               auto_found_routes << base_opts.merge({
                 url: url_to_use,

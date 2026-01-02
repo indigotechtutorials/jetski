@@ -40,8 +40,15 @@ For example adding a file `test-image.jpg` to the `app/assets/images` folder wit
 You can use this to for image sources on the page like so
 
 ```html
-  <img src="/test-image.jpg" width="300px" height="400px"/>
+<img src="/test-image.jpg" width="300px" height="400px"/>
 ```
+
+or use the ruby helper method
+
+```
+<%= image_tag "test-image.jpg", width: "300px", height: "400px" %>
+```
+
 
 ### Javascript
 
@@ -90,12 +97,12 @@ Creates these route
   DELETE /posts/:id
 ```
 
-For any other method name it will use a GET http method by default but to override this and use a custom HTTP method you can set `@request_method = "post"` line in the action to change the request method it looks for.
+For any other method name it will use a GET http method by default but to override this and use a custom HTTP method you can use the route method `route :index, root: true` line in the action to change the request method it looks for.
 
 ```ruby
 class PostsController < Jetski::BaseController
+  route :save, root: true
   def save
-    @request_method = "post"
     # do the saving logic
   end
 end
@@ -103,12 +110,12 @@ end
 
 Creates this route: "POST /posts/save"
 
-To set the root of the app simply set the @root variable to true before the method you want to use
+To set the root of the app use the route method and simply set the root keyword to true
 
 ```ruby
 class PagesController < Jetski::BaseController
+  route :home, root: true
   def home
-    @root = true
   end
 end
 ```
@@ -118,8 +125,8 @@ currently setting the path and request_method only work for non CRUD named actio
 
 ```ruby
 class ProjectsController < Jetski::BaseController
+  route :save, path: "my-custom-path"
   def save
-    @path = "/cool-custom-path"
   end
 end
 ```

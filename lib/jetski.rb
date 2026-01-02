@@ -6,8 +6,10 @@ require "rack"
 require "sqlite3"
 
 require_relative './jetski/version'
-require_relative './jetski/frontend/reactive_form'
 require_relative './jetski/helpers/view_helpers'
+require_relative './jetski/helpers/route_helpers'
+require_relative './jetski/helpers/delegatable'
+require_relative './jetski/frontend/reactive_form'
 require_relative './jetski/base_controller'
 require_relative './jetski/router/shared_methods'
 require_relative './jetski/router/parser'
@@ -16,7 +18,6 @@ require_relative './jetski/autoloader'
 require_relative './jetski/server'
 require_relative './jetski/database/base'
 require_relative './jetski/model'
-require_relative './jetski/helpers/delegatable'
 require_relative './jetski/view_renderer'
 
 module Jetski
