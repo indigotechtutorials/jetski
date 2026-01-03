@@ -1,4 +1,3 @@
-require 'thor'
 module JetskiCLIHelpers
   class Database < Thor
     include Thor::Actions, JetskiCLIHelpers::SharedMethods,

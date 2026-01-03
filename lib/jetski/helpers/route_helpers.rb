@@ -4,7 +4,6 @@ module Jetski
   module Helpers
     module RouteHelpers
       def route(method_name, root: false, path: nil, request_method: nil)
-        # TODO: write code to set route
         @custom_route_opts ||= {}
         @custom_route_opts[method_name] = {
           method_name: method_name,

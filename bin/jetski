@@ -5,6 +5,10 @@ require 'optparse'
 require 'thor'
 require "pry"
 
+require_relative './jetski_cli_helpers/generators/controller.rb'
+require_relative './jetski_cli_helpers/generators/model.rb'
+require_relative './jetski_cli_helpers/destroyers/controller.rb'
+require_relative './jetski_cli_helpers/destroyers/model.rb'
 require_relative './jetski_cli_helpers/shared_methods.rb'
 require_relative './jetski_cli_helpers/generate.rb'
 require_relative './jetski_cli_helpers/destroy.rb'
