@@ -108,8 +108,8 @@ module Jetski
       end
 
       def find(id)
-        # TODO: look up record by id
-        columns, *rows = db.execute2( "select * from #{pluralized_table_name} WHERE id=?", id)
+        id_as_integer = id.to_i
+        columns, *rows = db.execute2( "select * from #{pluralized_table_name} WHERE id=?", id_as_integer)
         format_model_obj(rows.last, columns)
       end
       
