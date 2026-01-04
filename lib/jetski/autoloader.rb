@@ -1,6 +1,6 @@
 module Jetski
   module Autoloader
-    include Jetski::Router::SharedMethods
+    include Jetski::Router::FilePathHelper
     extend self
     # Responsibility is to load all models in app.
     def call

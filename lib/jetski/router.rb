@@ -1,60 +1,38 @@
 module Jetski
   class Router
     include Parser
-    attr_reader :server
+    attr_reader :server, :routes, :crud_routes
     def initialize(server)
       @server = server
+      @crud_routes = []
     end
 
     def call
-      host_routes && host_assets
+      browser_support
+      fetch_routes
+      host_routes
+      host_crud_routes
+      host_assets
     end
 
     def host_routes
-      routes = compile_routes
+      crud_actions = %w(new create show index edit update destroy)
       routes.each do |af_route|
-        served_url = af_route[:url]
-        request_method = af_route[:method]
-        controller_classname = af_route[:controller_classname]
-        controller_name = af_route[:controller_name]
-        action_name = af_route[:action_name]
-        controller_file_name = af_route[:controller_file_name]
-        controller_path = af_route[:controller_path]
-
-        server.mount_proc served_url do |req, res|
-          errors = []
-          if (request_method != req.request_method)
-            errors << "Wrong request was performed"
-          end
-          if errors.empty?
-            path_to_defined_controller = File.join(Jetski.app_root, "app/controllers/#{controller_file_name}")
-            require_relative path_to_defined_controller
-            begin
-              controller_class = Object.const_get(controller_classname)
-            rescue NameError
-              errors << "#{controller_classname} is not defined. Please create a file app/controllers/#{controller_file_name}"
-            end
-          end
-
-          if errors.empty?
-            controller = controller_class.new(res)
-            controller.action_name = action_name
-            controller.controller_name = controller_name
-            controller.controller_path = controller_path
-            if req.body
-              controller.params = parse_body(req.body, req.content_type)
-            end
-            controller.cookies = req.cookies
-            controller.send(action_name)
-            if !controller.performed_render && (request_method.upcase == "GET")
-              controller.render
-            end
-          end
-
-          if errors.any?
-            res.body = errors.join(", ")
-          end
+        if crud_actions.include?(af_route[:action_name]) && (af_route[:url] != '/')
+          @crud_routes << af_route
+          next 
+          # We need to have only one server block for routes with handle crud enabled
         end
+        Host::Controller.new(server, **af_route).call
+      end
+    end
+
+    def host_crud_routes
+      # TODO: Build server block to handle custom crud routes
+      crud_routes_for_controller = crud_routes.group_by { |route| route[:controller_path] }
+      crud_routes_for_controller.each do |controller_path, controller_routes|
+        # TODO: Implement base level server block and checking.
+        Host::Crud.new(server, controller_routes, **controller_routes.first).call
       end
     end
 
@@ -107,16 +85,16 @@ module Jetski
         res.body = File.read(File.join(__dir__, 'frontend/reactive_form.js'))
       end
     end
-  private
-    def parse_body(body, content_type = '')
-      case content_type
-      when "application/x-www-form-urlencoded"
-        Rack::Utils.parse_nested_query body
-      when "application/json"
-        OpenStruct.new(JSON.parse(body))
-      else
-        body
+
+    # routes to help browser default requests etc. prevent breakage
+    def browser_support
+      server.mount_proc "/favicon.ico" do |req, res|
+        res.status = 204  # No Content
       end
+    end
+  private
+    def fetch_routes
+      @routes ||= compile_routes
     end
   end
 end

@@ -1,6 +1,6 @@
 module Jetski
   class Router
-    module SharedMethods
+    module FilePathHelper
       def controller_file_paths
         Dir.glob([File.join(Jetski.app_root, 'app', 'controllers', '**', '*_controller.rb')])
       end

@@ -13,7 +13,9 @@ module Jetski
 
     def call
       res.content_type = "text/html"
-      view_render = perform_view_render&.gsub("\n</head>", "#{content_for_head}\n</head>")
+      _rendered_view = perform_view_render
+      sanitized_view_render = _rendered_view.split("\n").map(&:strip).join("\n")
+      view_render = sanitized_view_render.gsub("\n</head>", "#{content_for_head}\n</head>")
       return error_screen if errors.any?
       res.body = view_render
     end
@@ -24,9 +26,9 @@ module Jetski
     end
 
     def perform_view_render
-      process_erb(File.read(File.join(views_folder, "layouts/application.html.erb"))) do
-        process_erb(File.read(File.join(views_folder, path_to_controller, "#{action_name}.html.erb")))
-      end
+      template_content = File.read(template_path)
+      layout_content = File.read(layout_path)
+      process_erb(layout_content) { process_erb(template_content) }
     end
 
     def process_erb(content)
@@ -37,6 +39,9 @@ module Jetski
       grab_instance_variables
       template.result(binding)
     rescue => e
+      # TODO: Add a better error screen like rails show a snapshot of the template and get the line number of error
+      # Also using template error doesnt account for errors inside of partials so need a new way of getting this
+      @errors << "Error in #{local_template_path}"
       @errors << e
       nil
     end
@@ -84,6 +89,18 @@ module Jetski
 
     def assets_folder
       File.join(Jetski.app_root, 'app/assets')
+    end
+
+    def layout_path
+      File.join(views_folder, "layouts/application.html.erb")
+    end
+
+    def template_path
+      File.join(views_folder, local_template_path)
+    end
+
+    def local_template_path
+      File.join(path_to_controller, "#{action_name}.html.erb")
     end
 
     def path_to_controller 

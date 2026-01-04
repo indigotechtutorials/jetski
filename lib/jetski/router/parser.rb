@@ -1,7 +1,7 @@
 module Jetski
   class Router
     module Parser
-      include Jetski::Router::SharedMethods
+      include Jetski::Router::FilePathHelper
       extend self
       def compile_routes
         auto_found_routes = []
@@ -20,11 +20,11 @@ module Jetski
           action_names = controller_class.instance_methods(false)
           base_opts = { 
             controller_classname: controller_classname, 
-            controller_file_name: controller_file_name,
             controller_name: controller_name,
             controller_path: controller_path,
+            controller_file_name: controller_file_name,
           }
-          route_opts_hash = controller_class.instance_variable_get(:@custom_route_opts)
+          route_opts_hash = controller_class.instance_variable_get(:@custom_route_opts) || {}
           action_names.each do |action_name|
             action_name = action_name.to_s
             route_opts = route_opts_hash.fetch(action_name.to_sym, {})
@@ -41,7 +41,7 @@ module Jetski
                 url
               end
             end
-
+            
             case action_name
             when "new"
               auto_found_routes << base_opts.merge({
@@ -51,7 +51,7 @@ module Jetski
               })
             when "create"
               auto_found_routes << base_opts.merge({
-                url: url_to_use.call(controller_path),
+                url: controller_path,
                 method: "POST",
                 action_name: action_name,
               })
@@ -69,13 +69,13 @@ module Jetski
               })
             when "update"
               auto_found_routes << base_opts.merge({
-                url: url_to_use.call(controller_path + "/:id"),
+                url: controller_path + "/:id",
                 method: "PUT",
                 action_name: action_name,
               })
             when "destroy"
               auto_found_routes << base_opts.merge({
-                url: url_to_use.call(controller_path + "/:id"),
+                url: controller_path + "/:id",
                 method: "DELETE",
                 action_name: action_name,
               })
