@@ -1,20 +1,15 @@
-require 'thor'
 module JetskiCLIHelpers
   class Destroy < Thor
-    include Thor::Actions
+    include Thor::Actions, JetskiCLIHelpers::Destroyers::Controller,
+    JetskiCLIHelpers::Destroyers::Model
     desc "controller NAME ACTION_NAMES", "Destroys a controller"
     def controller(name, *actions)
-      controller_file_path = "app/controllers/#{name}_controller.rb"
-      remove_file(controller_file_path)
-      view_folder = "app/views/#{name}"
-      remove_dir(view_folder)
+      destroy_controller(name)
     end
 
     desc "model NAME ACTION_NAMES", "Destroys a model"
     def model(name, *actions)
-      model_file_path = "app/models/#{name}.rb"
-      remove_file(controller_file_path)
-      # TODO: Remove from db.
+      destroy_model(name)
     end
   end
 end
