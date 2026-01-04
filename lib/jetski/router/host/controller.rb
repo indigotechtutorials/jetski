@@ -1,19 +1,13 @@
 module Jetski
   class Router
     module Host
-      class NonCrud < Base
+      class Controller < Base
         # Responsibility is to host the route with methods to route url to controller action
         # URL -> Controller#Action
-        attr_reader :controller_name, :action_name, :controller_file_name,
-            :controller_path, :controller_class
+        # Uses controller class name and action name to serve request
         
-        def initialize(server, **af_route)
-          super(server, **af_route)
-          @controller_classname = af_route[:controller_classname]
-          @controller_name = af_route[:controller_name]
-          @action_name = af_route[:action_name]
-          @controller_file_name = af_route[:controller_file_name]
-          @controller_path = af_route[:controller_path]
+        def initialize(server, **server_options)
+          super(server, **server_options)
         end
 
         def call
@@ -48,7 +42,6 @@ module Jetski
             body
           end
         end
-
       end
     end
   end

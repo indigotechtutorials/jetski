@@ -20,9 +20,9 @@ module Jetski
           action_names = controller_class.instance_methods(false)
           base_opts = { 
             controller_classname: controller_classname, 
-            controller_file_name: controller_file_name,
             controller_name: controller_name,
             controller_path: controller_path,
+            controller_file_name: controller_file_name,
           }
           route_opts_hash = controller_class.instance_variable_get(:@custom_route_opts) || {}
           action_names.each do |action_name|

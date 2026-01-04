@@ -22,17 +22,16 @@ module Jetski
           next 
           # We need to have only one server block for routes with handle crud enabled
         end
-        Host::NonCrud.new(server, **af_route).call
+        Host::Controller.new(server, **af_route).call
       end
     end
 
     def host_crud_routes
       # TODO: Build server block to handle custom crud routes
-      crud_routes_for_controller = crud_routes.group_by { |route| route[:controller_classname] }
-      crud_routes_for_controller.each do |controller_class, controller_routes|
+      crud_routes_for_controller = crud_routes.group_by { |route| route[:controller_path] }
+      crud_routes_for_controller.each do |controller_path, controller_routes|
         # TODO: Implement base level server block and checking.
-        controller_path = controller_routes.first[:controller_path]
-        
+        Host::Crud.new(server, controller_routes, **controller_routes.first).call
       end
     end
 
