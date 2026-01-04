@@ -8,6 +8,7 @@ module Jetski
     end
 
     def call
+      browser_support
       fetch_routes
       host_routes
       host_crud_routes
@@ -82,6 +83,13 @@ module Jetski
       server.mount_proc "/reactive-form.js" do |req, res|
         res.content_type = "text/javascript"
         res.body = File.read(File.join(__dir__, 'frontend/reactive_form.js'))
+      end
+    end
+
+    # routes to help browser default requests etc. prevent breakage
+    def browser_support
+      server.mount_proc "/favicon.ico" do |req, res|
+        res.status = 204  # No Content
       end
     end
   private

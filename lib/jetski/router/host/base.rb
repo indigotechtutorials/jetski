@@ -25,6 +25,7 @@ module Jetski
           server.mount_proc served_url do |req, res|
             @req = req
             @res = res
+            check_request_url
             check_request_method
             yield
             if errors.any?
@@ -44,8 +45,20 @@ module Jetski
         end
       private
         def check_request_method
-          if request_method && (request_method != req.request_method)
-            @errors << "Wrong request was performed"
+          # This breaks redirects because the req method is different from the request_method
+          # check if there is a redirect
+          
+          # if request_method && (request_method != req.request_method)
+          #   @errors << "Wrong request was performed"
+          # end
+        end
+
+        def check_request_url
+          if req.request_uri.path != served_url
+            # Silently fail to avoid printing error to page
+            res.status = 404
+            res.body = "Not Found"
+            #@errors << "Wrong url was used for request. Bad url: #{req.request_uri}"
           end
         end
       end

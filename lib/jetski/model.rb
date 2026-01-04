@@ -27,7 +27,13 @@ module Jetski
     end
 
     class << self
-      def create(**args)
+      def create(hash_args = nil, **key_args)
+        args = if hash_args && hash_args.is_a?(Hash)
+          hash_args
+        else
+          key_args
+        end
+
         return puts "#{table_name.capitalize}.create was called with no args" if args.size == 0
         data_values = args.map { |k,v| v }
         key_names = args.map { |k, v| k }
@@ -99,6 +105,12 @@ module Jetski
 
       def first
         format_model_obj(pluck_rows.first)
+      end
+
+      def find(id)
+        # TODO: look up record by id
+        columns, *rows = db.execute2( "select * from #{pluralized_table_name} WHERE id=?", id)
+        format_model_obj(rows.last, columns)
       end
       
       def table_name
