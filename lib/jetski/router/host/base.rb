@@ -26,7 +26,6 @@ module Jetski
             @req = req
             @res = res
             check_request_url
-            check_request_method
             yield
             if errors.any?
               res.body = errors.join(", ")
@@ -44,14 +43,6 @@ module Jetski
           end
         end
       private
-        def check_request_method
-          # This breaks redirects because the req method is different from the request_method
-          # check if there is a redirect
-          
-          # if request_method && (request_method != req.request_method)
-          #   @errors << "Wrong request was performed"
-          # end
-        end
 
         def check_request_url
           if req.request_uri.path != served_url

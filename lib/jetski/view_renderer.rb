@@ -12,7 +12,6 @@ module Jetski
     end
 
     def call
-      # TODO: Improve error handling for render.
       res.content_type = "text/html"
       _rendered_view = perform_view_render
       sanitized_view_render = _rendered_view.split("\n").map(&:strip).join("\n")

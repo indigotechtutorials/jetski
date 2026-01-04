@@ -19,8 +19,6 @@ module Jetski
     end
 
     # Method to render matching view with controller_name/action_name
-    # TODO: Make render available in view as seperate method.
-
     def render(**args)
       @performed_render = true
       request_status = args[:status] || 200

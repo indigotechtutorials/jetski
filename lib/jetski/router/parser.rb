@@ -42,8 +42,6 @@ module Jetski
               end
             end
             
-            # TODO: Build out solution for supporting crud routes.
-            # Webrick only supports static urls so we need to come up with a solution to get around this
             case action_name
             when "new"
               auto_found_routes << base_opts.merge({
