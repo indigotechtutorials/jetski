@@ -13,7 +13,9 @@ module Jetski
 
     def call
       res.content_type = "text/html"
-      view_render = perform_view_render&.gsub("\n</head>", "#{content_for_head}\n</head>")
+      _rendered_view = perform_view_render
+      sanitized_view_render = _rendered_view.split("\n").map(&:strip).join("\n")
+      view_render = sanitized_view_render.gsub("\n</head>", "#{content_for_head}\n</head>")
       return error_screen if errors.any?
       res.body = view_render
     end

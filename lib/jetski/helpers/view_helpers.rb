@@ -34,11 +34,27 @@ module Jetski
       end
 
       def image_tag(image_path, **html_opts)
-        "<img src='#{image_path}' #{format_html_options(**html_opts)}></img>"
+        abs_url = process_url(image_path)
+        "<img src='#{abs_url}' #{format_html_options(**html_opts)}></img>"
       end
 
       def favicon_tag(url, **html_opts)
-        "<link rel='icon' type='image/x-icon' #{format_html_options(**html_opts)} href='#{url}'>"
+        abs_url = process_url(url)
+        "<link rel='icon' type='image/x-icon' #{format_html_options(**html_opts)} href='#{abs_url}'>"
+      end
+
+      def stylesheet_tag(url, **html_opts)
+        abs_url = process_url(url)
+        "<link rel='stylesheet' #{format_html_options(**html_opts)} href='#{abs_url}'>"
+      end
+
+      def javascript_include_tag(url, **html_opts)
+        abs_url = process_url(url)
+        "<script src='#{abs_url}' #{format_html_options(**html_opts)}></script>"
+      end
+
+      def javascript_tag(**html_opts)
+        "<script #{format_html_options(**html_opts)}>#{yield}</script>"
       end
 
       def format_html_options(**html_opts)
@@ -46,6 +62,15 @@ module Jetski
           formatted_key = k.to_s.gsub("_", "-")
           "#{formatted_key}='#{v}'"
         end.join(" ")
+      end
+    private
+      def process_url(url)
+        # Need to ensure urls start with / to avoid relative requests
+        if url[0] == '/'
+          url
+        else
+          "/#{url}"
+        end
       end
     end
   end
