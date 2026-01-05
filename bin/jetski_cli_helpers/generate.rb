@@ -17,7 +17,7 @@ module JetskiCLIHelpers
     def resource(name, *field_names)
       crud_actions = %w(new create show index edit update destroy)
       generate_model(name, *field_names)
-      generate_controller(name, *crud_actions)
+      generate_controller(name, *crud_actions, field_names: field_names)
     end
   end
 end
