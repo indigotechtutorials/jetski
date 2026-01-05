@@ -67,7 +67,7 @@ module Jetski
       
       application_js_file = File.join(assets_folder, "javascript", "application.js")
       if File.exist? application_js_file
-        _content_for_head += "<script src='application.js' defer></script>\n"
+        _content_for_head += "<script src='/application.js' defer></script>\n"
       end
 
       controller_js_file = File.join(assets_folder, "javascript", "#{path_to_controller}.js")
