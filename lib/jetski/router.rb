@@ -28,16 +28,14 @@ module Jetski
     end
 
     def host_crud_routes
-      # TODO: Build server block to handle custom crud routes
       crud_routes_for_controller = crud_routes.group_by { |route| route[:controller_path] }
       crud_routes_for_controller.each do |controller_path, controller_routes|
-        # TODO: Implement base level server block and checking.
         Host::Crud.new(server, controller_routes, **controller_routes.first).call
       end
     end
 
     def host_assets
-      host_css && host_images && host_javascript && host_reactive_form_js
+      host_css && host_images && host_javascript && host_javascript_helpers
     end
 
     def host_css
@@ -79,10 +77,10 @@ module Jetski
       end
     end
 
-    def host_reactive_form_js
+    def host_javascript_helpers
       server.mount_proc "/reactive-form.js" do |req, res|
         res.content_type = "text/javascript"
-        res.body = File.read(File.join(__dir__, 'frontend/reactive_form.js'))
+        res.body = File.read(File.join(__dir__, 'frontend/javascript_helpers.js'))
       end
     end
 

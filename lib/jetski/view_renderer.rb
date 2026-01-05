@@ -33,8 +33,6 @@ module Jetski
 
     def process_erb(content)
       template = ERB.new(content)
-      # Perserve instance variables to view render
-      # @posts from controller to posts/index.html.erb
 
       grab_instance_variables
       template.result(binding)

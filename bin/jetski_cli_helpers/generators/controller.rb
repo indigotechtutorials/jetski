@@ -27,10 +27,14 @@ module JetskiCLIHelpers
           insert_into_file(controller_file_path, "#{indent_code(action_content, 1)}#{action_nl_seperator}", before: "\nend")
           
           if !["create", "create", "update", "destroy"].include?(action_name)
+            # For new, show, edit, index actions
             path_to_view = "app/views/#{pluralized_name}/#{action_name}.html.erb"
 
             empty_directory("app/views/#{pluralized_name}")
             create_file(path_to_view)
+
+            # How to access model created inside of controller generator?
+            
             append_to_file path_to_view, <<~EXAMPLEFILE
               <h1> #{pluralized_name}##{action_name} </h1>
               <p> edit the content of this page at app/views/#{path_to_view}/#{action_name}.html.erb </p>

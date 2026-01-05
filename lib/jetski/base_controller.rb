@@ -6,7 +6,7 @@ module Jetski
         :@controller_name, :@controller_path, :@cookies
     ]
 
-    include ReactiveForm
+    include Jetski::Frontend::JavascriptHelpers
     extend Jetski::Helpers::RouteHelpers
     attr_accessor :action_name, :controller_name, :controller_path, 
       :params, :cookies
