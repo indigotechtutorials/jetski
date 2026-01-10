@@ -29,8 +29,6 @@ module JetskiCLIHelpers
         CONTROLLER
 
         actions.each.with_index do |action_name, idx|
-          # TODO: need to use correct action code for crud routes
-          # default
           action_content = ""
 
           if field_names

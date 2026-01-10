@@ -26,7 +26,6 @@ module Jetski
         end
       private
         def determine_action_from_url
-          # TODO: Handle checking for url params.
           req_path = req.request_uri.path
           custom_route_options.tap do |opts|
             case req_path

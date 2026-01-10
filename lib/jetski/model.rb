@@ -68,6 +68,7 @@ module Jetski
         db.execute("DELETE from #{pluralized_table_name}")
       end
 
+      # TODO: Find a better solution than this
       def define_attribute_methods
         attributes.each do |attribute|
           define_method attribute do

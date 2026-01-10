@@ -84,8 +84,8 @@ module Jetski
         end.join(" ")
       end
     private
+      # TODO: could move this to a sharable method.
       def process_url(url)
-        # Need to ensure urls start with / to avoid relative requests
         if url[0] == '/'
           url
         else

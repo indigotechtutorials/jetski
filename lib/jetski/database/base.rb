@@ -14,6 +14,8 @@ module Jetski
           table_name + "s"
         end
 
+        # TODO: Clean this code up to a method that can build SQL with correct indentation and endings.
+        # sql.create_table(pluralized_table_name, created_at: :datetime, updated_at: :datetime, id: :integer) etc.
         _gen_sql = ""
         _gen_sql += "create table #{pluralized_table_name} (\n"
         
