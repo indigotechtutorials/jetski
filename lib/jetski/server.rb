@@ -1,4 +1,4 @@
-module Jetski
+class Jetski
   class Server
     attr_reader :port
     

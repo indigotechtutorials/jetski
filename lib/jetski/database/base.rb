@@ -1,4 +1,4 @@
-module Jetski
+class Jetski
   module Database
     module Base
       extend self
@@ -8,16 +8,12 @@ module Jetski
       end
 
       def create_table_sql(table_name:, field_names:)
-        pluralized_table_name = if table_name.chars.last == "s"
-          table_name
-        else
-          table_name + "s"
-        end
+        table_name = pluralize_string(table_name)
 
         # TODO: Clean this code up to a method that can build SQL with correct indentation and endings.
         # sql.create_table(pluralized_table_name, created_at: :datetime, updated_at: :datetime, id: :integer) etc.
         _gen_sql = ""
-        _gen_sql += "create table #{pluralized_table_name} (\n"
+        _gen_sql += "create table #{table_name} (\n"
         
         # Default fields on all models
         _gen_sql += "  created_at datetime,\n"

@@ -192,6 +192,18 @@ then run the command in terminal
 
 `jetski db seed`
 
+### Configure database library
+
+currently the jetski framework only supports sqlite3 as the database library
+
+in the future you would be able to create a `config.rb` file and set custom config options for jetski like changing the database library
+
+```ruby
+Jetski.config do |config|
+  config.database_library = "postgresql"
+end
+```
+
 ### Framework description
 
 now u can build websites even faster!

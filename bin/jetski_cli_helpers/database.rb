@@ -1,7 +1,5 @@
 module JetskiCLIHelpers
-  class Database < Thor
-    include Thor::Actions, JetskiCLIHelpers::SharedMethods,
-      Jetski::Database::Base
+  class Database < Base
     desc "create", "Creates a database for your app"
     def create
       say "🌊 Database was created successfully!"

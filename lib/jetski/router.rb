@@ -1,4 +1,4 @@
-module Jetski
+class Jetski
   class Router
     include Parser
     attr_reader :server, :routes, :crud_routes
