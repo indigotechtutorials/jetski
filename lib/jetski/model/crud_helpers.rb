@@ -45,7 +45,7 @@ class Jetski
 
           record_attributes = {}
           key_names.each.with_index do |k, i|
-            record_attributes[k] = data_values[i]
+            record_attributes[k.to_sym] = data_values[i]
           end
 
           new(**record_attributes)

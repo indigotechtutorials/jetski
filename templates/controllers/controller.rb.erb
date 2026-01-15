@@ -40,13 +40,15 @@ class <%= @controller_class_name %>Controller < Jetski::BaseController
     @<%= @controller_name %> = <%= @model_class_name %>.all
   end
 <% end -%>
+
 <% end -%>
+private
 
 <% if @field_names -%>
   def <%= @name %>_params
     {
   <% @field_names.each do |field| -%>
-    <%= field.split(":")[0] %>: params[:<%= @controller_name%>][:<%= field.split(":")[0] %>],
+    <%= field.split(":")[0] %>: params["<%= @controller_name%>"]["<%= field.split(":")[0] %>"],
   <% end -%>
   }
   end

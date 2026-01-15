@@ -3,6 +3,6 @@
 <a href="/<%= @controller_name %>/<%%= @<%= @name %>.id %>/edit"> Edit <%= @name %></a>
 <% @field_names.each do |field| -%>
   <p> 
-    <%= field %>: <%% @<%= @name %>.<%= field %> %>
+    <%= field.split(":")[0] %>: <%%= @<%= @name %>.<%= field.split(":")[0] %> %>
   </p>
 <% end -%>
