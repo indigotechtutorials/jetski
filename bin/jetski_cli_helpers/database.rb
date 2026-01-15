@@ -1,13 +1,20 @@
 module JetskiCLIHelpers
   class Database < Base
-    desc "create", "Creates a database for your app"
-    def create
-      say "🌊 Database was created successfully!"
-    end
-
-    desc "create_table NAME COLUMN_NAMES", "Creates a new table in your database"
-    def create_table(name, *fields)
-      db.execute create_table_sql(table_name: name, field_names: fields)
+    desc "migrate", "Create, load, and patch DB from models"
+    def migrate
+      Jetski::Autoloader.call
+      # Get all models defined in users app
+      Jetski::Model.subclasses.each do |model|
+        table_name = model.pluralized_table_name
+        # Create table if it doesnt exist
+        create_table(table_name) if !table_exists?(table_name)
+        # Get model attributes
+        model.db_attribute_values.each do |obj|
+          name = obj[:name]
+          type = obj[:type]
+          add_column_unless_exists(table_name, name, type)
+        end
+      end
     end
 
     desc "seed", "Seeds the database with records created from seed file"

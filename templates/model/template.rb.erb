@@ -1,5 +1,5 @@
 class <%= @model_name.capitalize %> < Jetski::Model
-<% if @field_names.any? -%>
-  attributes <%= @field_names.map { |f| ":#{f}" }.join(", ") %>
+<% if @model_attributes -%>
+  attributes <%= @model_attributes.join(", ") %>
 <% end -%>
 end

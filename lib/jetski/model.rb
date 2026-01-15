@@ -1,6 +1,7 @@
 class Jetski
   class Model
-    extend Jetski::Database::Base, Jetski::Helpers::Generic
+    extend Jetski::Database::Base, Jetski::Helpers::Generic, 
+      Jetski::Model::Attributes
     include CrudHelpers, Jetski::Helpers::Generic
 
     def initialize(**args)
@@ -8,8 +9,7 @@ class Jetski
     end
 
     def inspect
-      post_obj_id = object_id
-      inspect_str = "#<#{self.class.to_s}:#{post_obj_id}"
+      inspect_str = "#<#{self.class.to_s}:#{object_id}"
       self.class.attribute_names.each do |attribute_name|
         attribute_value = @virtual_attributes[attribute_name]
         inspect_str += " #{attribute_name}=\"#{attribute_value}\""
@@ -19,37 +19,8 @@ class Jetski
     end
 
     class << self
-      def attributes(*attribute_names)
-        @_attribute_names ||= []
-        @_attribute_names.concat([:created_at, :updated_at, :id]) # defaults
-        @_attribute_names.concat(attribute_names)
-        @_attribute_names = @_attribute_names.uniq
-        attribute_names.each do |attribute|
-          define_method attribute do
-            @virtual_attributes[attribute]
-          end
-        end
-      end
-
-      def attribute_names
-        @_attribute_names || []
-      end
-
-      def pluck_rows
-        db.execute( "select * from #{pluralized_table_name}" )
-      end
-
-      def count
-        pluck_rows.size
-      end
-
-      def last
-        format_model_obj(pluck_rows.last)
-      end
-
-      def first
-        format_model_obj(pluck_rows.first)
-      end
+      extend Jetski::Helpers::Delegatable
+      delegate :count, :last, :first, to: :all
 
       def table_name
         self.to_s.downcase
@@ -58,13 +29,14 @@ class Jetski
       def pluralized_table_name
         pluralize_string(table_name)
       end
+      
+      # Mark attributes method as private hide it from IRB
+      private :attributes
     private
-      def format_model_obj(row, columns = nil)
-        return unless row
-        columns ||= attribute_names
+      def format_model_obj(row, columns)
         row_obj = {}
         columns.each.with_index do |col, idx|
-          row_obj[col] = row[idx]
+          row_obj[col.to_sym] = row[idx]
         end
         new(**row_obj)
       end

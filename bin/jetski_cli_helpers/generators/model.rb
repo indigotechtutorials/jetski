@@ -6,7 +6,22 @@ module JetskiCLIHelpers
         # this will automatically build and patch db tables. Add/remove columns 
         #db.execute create_table_sql(table_name: name, field_names: field_names)
         @model_name = name
-        @field_names = field_names.map { |f| f.split(":")[0] }
+
+        
+        if field_names
+          @model_attributes = []
+          custom_fields = field_names.filter { |f| f.include?(":") }
+          string_fields = field_names - custom_fields
+          string_fields.each do |field|
+            @model_attributes << ":#{field}"
+          end
+
+          custom_fields.each do |custom_field|
+            field, type = custom_field.split(":")
+            @model_attributes << "#{field}: :#{type}"
+          end
+        end
+          
         model_file_path = "app/models/#{name}.rb"
         template "model/template.rb.erb", model_file_path
       end
