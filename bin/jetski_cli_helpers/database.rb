@@ -3,17 +3,11 @@ module JetskiCLIHelpers
     desc "migrate", "Create, load, and patch DB from models"
     def migrate
       Jetski::Autoloader.call
-      # Get all models defined in users app
       Jetski::Model.subclasses.each do |model|
         table_name = model.pluralized_table_name
-        # Create table if it doesnt exist
-        create_table(table_name) if !table_exists?(table_name)
-        # Get model attributes
-        model.db_attribute_values.each do |obj|
-          name = obj[:name]
-          type = obj[:type]
-          add_column_unless_exists(table_name, name, type)
-        end
+        create_table_unless_exists(table_name)
+        model.db_attribute_values
+          .each { |obj| add_column_unless_exists(table_name, obj[:name], obj[:type]) }
       end
     end
 

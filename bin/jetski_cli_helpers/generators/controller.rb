@@ -13,17 +13,12 @@ module JetskiCLIHelpers
         @field_names = field_names
         @actions = actions
 
-        # Create controller from template
         template "controllers/controller.rb.erb", controller_file_path
         
         actions.each do |action_name|
-          # create views
           if !["create", "create", "update", "destroy"].include?(action_name)
             empty_directory("app/views/#{@controller_name}")
-            
-            # For new, show, edit, index actions
             @path_to_view = "app/views/#{@controller_name}/#{action_name}.html.erb"
-            
             template_name = if ["new", "show", "edit", "index"].include?(action_name)
               action_name
             else
