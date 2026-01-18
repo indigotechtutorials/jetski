@@ -1,4 +1,4 @@
-module Jetski
+class Jetski
   module Autoloader
     include Jetski::Router::FilePathHelper
     extend self
@@ -12,10 +12,6 @@ module Jetski
           .split("/")
           .map(&:capitalize)
           .join("::")
-        # posts/comment
-        # Post/comment
-        model_class = Object.const_get(model_name)
-        model_class.define_attribute_methods
       end
     end
 
